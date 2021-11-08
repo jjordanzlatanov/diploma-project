@@ -1,2 +1,2 @@
 # diploma-project
-Lightweight Web 2D game focused around construction and automation
+Уеб базирана 2D игра с управление на материали и автоматизиране на производство с цел улесняването и реализирането на бъдещите идеи на играча
