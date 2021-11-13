@@ -1,2 +1,2 @@
 # diploma-project
-Уеб базирана 2D игра с управление на материали и автоматизиране на производство с цел улесняването и реализирането на бъдещите идеи на играча
+Web based 2D game focused around resource gathering and automation
