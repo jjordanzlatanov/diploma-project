@@ -18,4 +18,3 @@ Form - [\<type>] \<message> (\<issue>)
 
 **Issue:**
 - Form - \#\<number>
-- Optional
