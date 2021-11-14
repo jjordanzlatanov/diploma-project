@@ -1,16 +1,17 @@
 # Commit
-- [Fix] - Fix problem
+Form - [\<type>] \<message>  
 
-- [Feat] - Add feature
+**Types:**
+- Fix - Fix problem
 
-- [Merge] - Merge branch
+- Feat - Add feature
 
-- [Perf] - Change performance
+- Doc - Add/Change documentation
 
-- [Docs] - Add/Change documentation
+- Ref - Refactor code
 
-- [Ref] - Refactor code
+- Perf - Change performance
 
-- [Style] - Edit code
+- Build - Change run setup
 
-- [Build] - Change run setup
+- Merge - Merge branch
