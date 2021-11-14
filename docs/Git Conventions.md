@@ -1,7 +1,7 @@
 # Commit
-Form - [\<type>] \<message>  
+Form - [\<type>] \<message> (\<issue>)
 
-**Types:**
+**Type:**
 - Fix - Fix problem
 
 - Feat - Add feature
@@ -15,3 +15,7 @@ Form - [\<type>] \<message>
 - Build - Change run setup
 
 - Merge - Merge branch
+
+**Issue:**
+- Form - \#\<number>
+- Optional
