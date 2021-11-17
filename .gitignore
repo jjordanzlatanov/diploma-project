@@ -2,3 +2,6 @@
 .idea
 target
 tmp
+
+# Server
+apache-tomcat-10.0.13
