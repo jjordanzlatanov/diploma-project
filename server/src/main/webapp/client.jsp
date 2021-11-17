@@ -1,5 +1,9 @@
 <html>
+    <head>
+        <script src="phaser.js"></script>
+        <script src="game.js"></script>
+    </head>
+
     <body>
-        Hello from client.jsp
     </body>
 </html>
