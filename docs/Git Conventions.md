@@ -20,13 +20,15 @@ Form - [\<type>] \<message> (\<issue>)
 - First letter of message and terminology is uppercase
 
 **Issue**
-- Form - \#\<number>
+- \#\<number>  
+
+    Number is the number of the issue
 
 # Issue
 Form
 - \<title>  
 
-    First letter of the and terminology is uppercase
+    First letter of title and terminology is uppercase
 
 - **Description**  
 
@@ -34,4 +36,4 @@ Form
 
 - **Goals**  
 
-    List of the tasks using checkboxes - [ ]
+    List of the tasks using checkboxes
