@@ -12,13 +12,13 @@ var config = {
 var game = new Phaser.Game(config);
 
 function preload(){
-    this.load.image('tile', 'assets/tile.jpg');
+    this.load.image('tile', 'assets/tile.png');
 }
 
 function create(){
-    this.image = this.add.image(2000, 2000, 'tile');
+    this.image = this.add.image(82, 90, 'tile');
 }
 
 function update(){
-
+    this.image.x += 1;
 }
