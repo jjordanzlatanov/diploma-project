@@ -7,7 +7,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UfgApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(UfgApplication.class, args);
-
-		System.out.println("Running...");
 	}
 }
