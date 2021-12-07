@@ -3,9 +3,6 @@
 target
 tmp
 
-# Server
-apache-tomcat-10.0.13
-
 # Phaser
 phaser
 phaser3-docs
