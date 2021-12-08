@@ -10,10 +10,9 @@ html {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #121212; /* fallback for old browsers */
+  background: #121212;
+  /* fallback for old browsers */
   overflow-x: hidden;
-
-  height: 100%;
 
   /* code to make all text unselectable */
   -webkit-user-select: none;
@@ -46,8 +45,7 @@ h1 {
 
 .flex-container {
   width: 100vw;
-
-  margin-top: 60px;
+  height: 100vh;
 
   display: flex;
   justify-content: center;
@@ -56,7 +54,7 @@ h1 {
 
 .content-container {
   width: 500px;
-  height: 350px;
+  height: 465px;
 }
 
 .form-container {
@@ -65,7 +63,7 @@ h1 {
   align-items: center;
 
   width: 500px;
-  height: 460px;
+  height: 465px;
 
   padding-top: 20px;
 
@@ -117,6 +115,6 @@ input {
 
   display: flex;
   justify-content: center;
-  
+
   transition: all 1s;
 }
