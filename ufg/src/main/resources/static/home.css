@@ -23,16 +23,6 @@ body {
   user-select: none;
 }
 
-/* Disables selector ring */
-body:not(.user-is-tabbing) button:focus,
-body:not(.user-is-tabbing) input:focus,
-body:not(.user-is-tabbing) select:focus,
-body:not(.user-is-tabbing) textarea:focus {
-  outline: none;
-}
-
-/* ########################################################## */
-
 h1 {
   color: white;
 
@@ -41,46 +31,6 @@ h1 {
 
   display: flex;
   justify-content: center;
-}
-
-.flex-container {
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.content-container {
-  width: 500px;
-  height: 150px;
-}
-
-.form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  width: 500px;
-  height: 150px;
-
-  padding-top: 20px;
-
-  border-radius: 12px;
-
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-
-  background: #1f1f1f;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
-}
-
-.subtitle {
-  font-size: 11px;
-
-  color: rgba(255, 255, 255, 0.7);
 }
 
 input {
@@ -96,10 +46,60 @@ input {
   width: 300px;
 }
 
+/* Disables selector ring */
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+  outline: none;
+}
+
+/* ########################################################## */
+
+.flex-container {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-container {
+  width: 500px;
+  height: 150px;
+  
+
+  border-radius: 12px;
+  
+  background: #1f1f1f;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
+}
+
+.form-container {
+  width: 500px;
+  height: 150px;
+
+  padding-top: 20px;
+
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.subtitle {
+  font-size: 11px;
+
+  color: rgba(255, 255, 255, 0.7);
+}
+
 .input-container {
+  padding-top: 25px;
+
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .button {

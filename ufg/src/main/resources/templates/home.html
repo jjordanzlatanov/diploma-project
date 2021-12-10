@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
   <!-- Used in production -->
-  <!-- <link rel="stylesheet" href="/home.css"/> -->
+  <link rel="stylesheet" href="/home.css" />
 
   <!-- Used for development through VS Code Live Server extension -->
   <link rel="stylesheet" href="../static/home.css" />
@@ -15,15 +15,15 @@
   <div class="flex-container">
     <div class="content-container">
       <div class="form-container">
-        <form action="/home" method="post">
-          <h1>Welcome to UFG</h1>
-          <br>
-          <br>
-          <div class="input-container">
-            <input type="submit" value="LOGIN" class="button">
+        <h1>Welcome to UFG</h1>
+        <div class="input-container">
+          <form action="./login.html" method="get">
+              <input type="submit" value="LOGIN" class="button">
+          </form>
+          <form action="/register" method="post">
             <input type="submit" value="REGISTER" class="button">
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>

@@ -23,16 +23,6 @@ body {
   user-select: none;
 }
 
-/* Disables selector ring */
-body:not(.user-is-tabbing) button:focus,
-body:not(.user-is-tabbing) input:focus,
-body:not(.user-is-tabbing) select:focus,
-body:not(.user-is-tabbing) textarea:focus {
-  outline: none;
-}
-
-/* ########################################################## */
-
 h1 {
   color: white;
 
@@ -42,6 +32,29 @@ h1 {
   display: flex;
   justify-content: center;
 }
+
+input {
+  border: none;
+  border-bottom: solid rgb(143, 143, 143) 1px;
+
+  margin-bottom: 30px;
+
+  background: none;
+  color: rgb(255, 255, 255);
+
+  height: 35px;
+  width: 300px;
+}
+
+/* Disables selector ring */
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+  outline: none;
+}
+
+/* ########################################################## */
 
 .flex-container {
   width: 100vw;
@@ -81,19 +94,6 @@ h1 {
   font-size: 11px;
 
   color: rgba(255, 255, 255, 0.7);
-}
-
-input {
-  border: none;
-  border-bottom: solid rgb(143, 143, 143) 1px;
-
-  margin-bottom: 30px;
-
-  background: none;
-  color: rgb(255, 255, 255);
-
-  height: 35px;
-  width: 300px;
 }
 
 .input-container {
