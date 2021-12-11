@@ -23,9 +23,13 @@ public class MainController{
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(@ModelAttribute("user") User user){
+    public String register(Model model, @ModelAttribute("user") User user){
         if(!user.validateRegister()){
             return "register";
+        }
+
+        if(!user.getPassword().equals(user.getRepeatedPassword())){
+            throw new PasswordRepeatPasswordMismatchException();
         }
 
         System.out.println(user.getPassword());

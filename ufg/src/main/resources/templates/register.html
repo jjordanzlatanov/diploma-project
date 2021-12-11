@@ -5,10 +5,10 @@
   <meta charset="UTF-8">
   <title>Register</title>
   <!-- Used in production -->
-  <!-- <link rel="stylesheet" href="/register.css" /> -->
+  <link rel="stylesheet" href="/register.css" />
 
   <!-- Used for development through VS Code Live Server extension -->
-  <link rel="stylesheet" href="../static/register.css" />
+  <!-- <link rel="stylesheet" href="../static/register.css" /> -->
 </head>
 
 <body>
@@ -38,6 +38,11 @@
             <input type="submit" value="REGISTER" class="button">
           </div>
         </form>
+      </div>
+    </div>
+    <div th:if="${errorMessage} != null" class="error-container">
+      <div class="box-container">
+        <p th:text="${errorMessage}" class="error"></p>
       </div>
     </div>
   </div>

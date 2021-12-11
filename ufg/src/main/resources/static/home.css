@@ -61,6 +61,7 @@ body:not(.user-is-tabbing) textarea:focus {
   height: 100vh;
 
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
