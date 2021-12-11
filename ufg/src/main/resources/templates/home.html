@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
   <!-- Used in production -->
-  <link rel="stylesheet" href="/home.css" />
+  <!-- <link rel="stylesheet" href="/home.css" /> -->
 
   <!-- Used for development through VS Code Live Server extension -->
   <link rel="stylesheet" href="../static/home.css" />
@@ -17,8 +17,8 @@
       <div class="form-container">
         <h1>Welcome to UFG</h1>
         <div class="input-container">
-          <form action="./login.html" method="get">
-              <input type="submit" value="LOGIN" class="button">
+          <form action="/login" method="post">
+            <input type="submit" value="LOGIN" class="button">
           </form>
           <form action="/register" method="post">
             <input type="submit" value="REGISTER" class="button">
