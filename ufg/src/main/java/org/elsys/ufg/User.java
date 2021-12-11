@@ -39,18 +39,22 @@ public class User {
     }
 
     public boolean validateLogin(){
-        if(username != null && password != null){
+        if(username != null && password != null && !username.equals("") && !password.equals("")){
             return true;
         }
 
         return false;
     }
 
-    public boolean validateRegister(){
-        if(username != null && password != null && email != null){
-            return true;
+    public String validateRegister(){
+        if(username == null || password == null || email == null || repeatedPassword == null){
+            return "redirect";
         }
 
-        return false;
+        if(username.equals("") || password.equals("") || email.equals("") || repeatedPassword.equals("")){
+            return "emptyField";
+        }
+
+        return "valid";
     }
 }

@@ -9,10 +9,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ErrorController {
     @ExceptionHandler(PasswordRepeatPasswordMismatchException.class)
-    public String passwordRepeatPasswordMismatchExceptionHandler(Model model){
-        model.addAttribute("errorMessage", "Password did not match repeated password");
+    public String passwordRepeatPasswordMismatchExceptionHandler(Model model, PasswordRepeatPasswordMismatchException exception){
+        model.addAttribute("errorMessage", exception.getErrorMessage());
         model.addAttribute("user", new User());
         return "register";
+    }
+
+    @ExceptionHandler(EmptyInputException.class)
+    public String emptyInputExceptionHandler(Model model, EmptyInputException exception){
+        model.addAttribute("errorMessage", exception.getErrorMessage());
+        model.addAttribute("user", new User());
+        return exception.getPage();
     }
 }
 

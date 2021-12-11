@@ -2,6 +2,7 @@ package org.elsys.ufg;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,15 +25,19 @@ public class MainController{
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String register(Model model, @ModelAttribute("user") User user){
-        if(!user.validateRegister()){
-            return "register";
+        switch (user.validateRegister()){
+            case "redirect" -> {
+                return "register";
+            }
+
+            case "emptyField" -> throw new EmptyInputException("register");
         }
 
         if(!user.getPassword().equals(user.getRepeatedPassword())){
             throw new PasswordRepeatPasswordMismatchException();
         }
 
-        System.out.println(user.getPassword());
+        System.out.println(user.getEmail());
 
         return null;
     }
