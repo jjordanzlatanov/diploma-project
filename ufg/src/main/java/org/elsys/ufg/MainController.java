@@ -1,11 +1,10 @@
 package org.elsys.ufg;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController{
@@ -14,19 +13,27 @@ public class MainController{
         return "home";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@ModelAttribute("user") User user){
-        if(!user.validateLogin()) {
-            return "login";
+    @RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
+    public String login(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect) {
+        if (registerRedirect != null && registerRedirect.equals("REGISTER")) {
+            return "redirect:/register";
+        }
+
+        switch (user.validateLogin()) {
+            case "show" -> {
+                return "login";
+            }
+
+            case "emptyField" -> throw new EmptyInputException("login");
         }
 
         return null;
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String register(Model model, @ModelAttribute("user") User user){
+    @RequestMapping(value = "/register", method = {RequestMethod.POST, RequestMethod.GET})
+    public String register(@ModelAttribute("user") User user){
         switch (user.validateRegister()){
-            case "redirect" -> {
+            case "show" -> {
                 return "register";
             }
 
@@ -36,8 +43,6 @@ public class MainController{
         if(!user.getPassword().equals(user.getRepeatedPassword())){
             throw new PasswordRepeatPasswordMismatchException();
         }
-
-        System.out.println(user.getEmail());
 
         return null;
     }

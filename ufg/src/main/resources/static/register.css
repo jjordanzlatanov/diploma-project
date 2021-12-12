@@ -114,10 +114,10 @@ body:not(.user-is-tabbing) textarea:focus {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.error {
-    font-size: 20px;
+.error-message {
+  font-size: 20px;
 
-    color: white;
+  color: white;
 }
 
 .input-container {

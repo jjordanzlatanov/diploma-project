@@ -38,17 +38,21 @@ public class User {
         this.repeatedPassword = repeatedPassword;
     }
 
-    public boolean validateLogin(){
-        if(username != null && password != null && !username.equals("") && !password.equals("")){
-            return true;
+    public String validateLogin(){
+        if(username == null || password == null){
+            return "redirect";
         }
 
-        return false;
+        if(username.equals("") || password.equals("")){
+            return "emptyField";
+        }
+
+        return "valid";
     }
 
     public String validateRegister(){
         if(username == null || password == null || email == null || repeatedPassword == null){
-            return "redirect";
+            return "show";
         }
 
         if(username.equals("") || password.equals("") || email.equals("") || repeatedPassword.equals("")){
