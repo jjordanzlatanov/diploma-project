@@ -9,4 +9,5 @@ class UfgApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+
 }

@@ -12,11 +12,18 @@ public class ErrorController {
     public String passwordRepeatPasswordMismatchExceptionHandler(Model model, PasswordRepeatPasswordMismatchException exception){
         model.addAttribute("errorMessage", exception.getErrorMessage());
         model.addAttribute("user", new User());
-        return "register";
+        return exception.getPage();
     }
 
     @ExceptionHandler(EmptyInputException.class)
     public String emptyInputExceptionHandler(Model model, EmptyInputException exception){
+        model.addAttribute("errorMessage", exception.getErrorMessage());
+        model.addAttribute("user", new User());
+        return exception.getPage();
+    }
+
+    @ExceptionHandler(UserDoesNotExistException.class)
+    public String userDoesNotExistExceptionHandler(Model model, UserDoesNotExistException exception){
         model.addAttribute("errorMessage", exception.getErrorMessage());
         model.addAttribute("user", new User());
         return exception.getPage();

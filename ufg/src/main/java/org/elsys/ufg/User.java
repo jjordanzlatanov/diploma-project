@@ -1,9 +1,18 @@
 package org.elsys.ufg;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.relational.core.mapping.Table;
+
+@Table("users")
 public class User {
+
+    @Id
+    private Integer id;
     private String username;
     private String password;
     private String email;
+    @Transient
     private String repeatedPassword;
 
     public String getUsername() {
@@ -38,13 +47,34 @@ public class User {
         this.repeatedPassword = repeatedPassword;
     }
 
-    public String validateLogin(){
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public User(){}
+
+    public User(String username, String password, String email) {
+        this.id = null;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
+
+    public String validateLogin(UserRepository userRepository){
         if(username == null || password == null){
-            return "redirect";
+            return "show";
         }
 
         if(username.equals("") || password.equals("")){
             return "emptyField";
+        }
+
+        if(!userRepository.existsByUsernameAndPassword(username, password)){
+            return "does not exist";
         }
 
         return "valid";

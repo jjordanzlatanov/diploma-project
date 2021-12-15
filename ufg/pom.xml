@@ -8,18 +8,19 @@
 		<version>2.6.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-
 	<groupId>org.elsys.ufg</groupId>
 	<artifactId>ufg</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-
 	<name>ufg</name>
 	<description>Untitled Factory Game</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
-
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
@@ -36,6 +37,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -56,4 +58,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

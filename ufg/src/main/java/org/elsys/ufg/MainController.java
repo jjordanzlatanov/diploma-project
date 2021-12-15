@@ -1,5 +1,6 @@
 package org.elsys.ufg;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController{
+    @Autowired
+    UserRepository userRepository;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(){
         return "home";
@@ -19,12 +23,14 @@ public class MainController{
             return "redirect:/register";
         }
 
-        switch (user.validateLogin()) {
+        switch (user.validateLogin(userRepository)) {
             case "show" -> {
                 return "login";
             }
 
             case "emptyField" -> throw new EmptyInputException("login");
+
+            case "does not exist" -> throw new UserDoesNotExistException();
         }
 
         return null;
@@ -43,6 +49,8 @@ public class MainController{
         if(!user.getPassword().equals(user.getRepeatedPassword())){
             throw new PasswordRepeatPasswordMismatchException();
         }
+
+        userRepository.save(user);
 
         return null;
     }
