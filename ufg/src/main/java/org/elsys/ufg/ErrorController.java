@@ -28,5 +28,19 @@ public class ErrorController {
         model.addAttribute("user", new User());
         return exception.getPage();
     }
+
+    @ExceptionHandler(UsernameIsTakenException.class)
+    public String usernameIsTakenExceptionHandler(Model model, UsernameIsTakenException exception){
+        model.addAttribute("errorMessage", exception.getErrorMessage());
+        model.addAttribute("user", new User());
+        return exception.getPage();
+    }
+
+    @ExceptionHandler(EmailIsTakenException.class)
+    public String emailIsTakenExceptionHandler(Model model, EmailIsTakenException exception){
+        model.addAttribute("errorMessage", exception.getErrorMessage());
+        model.addAttribute("user", new User());
+        return exception.getPage();
+    }
 }
 

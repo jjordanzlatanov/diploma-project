@@ -80,13 +80,21 @@ public class User {
         return "valid";
     }
 
-    public String validateRegister(){
+    public String validateRegister(UserRepository userRepository){
         if(username == null || password == null || email == null || repeatedPassword == null){
             return "show";
         }
 
         if(username.equals("") || password.equals("") || email.equals("") || repeatedPassword.equals("")){
             return "emptyField";
+        }
+
+        if(userRepository.existsByUsername(username)){
+            return "username is already taken";
+        }
+
+        if(userRepository.existsByEmail(email)){
+            return "email is already taken";
         }
 
         return "valid";

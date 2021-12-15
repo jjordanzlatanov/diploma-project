@@ -38,12 +38,16 @@ public class MainController{
 
     @RequestMapping(value = "/register", method = {RequestMethod.POST, RequestMethod.GET})
     public String register(@ModelAttribute("user") User user){
-        switch (user.validateRegister()){
+        switch (user.validateRegister(userRepository)){
             case "show" -> {
                 return "register";
             }
 
             case "emptyField" -> throw new EmptyInputException("register");
+
+            case "username is already taken" -> throw new UsernameIsTakenException();
+
+            case "email is already taken" -> throw new EmailIsTakenException();
         }
 
         if(!user.getPassword().equals(user.getRepeatedPassword())){
