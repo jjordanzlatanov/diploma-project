@@ -14,6 +14,10 @@ public class User {
     private String email;
     @Transient
     private String repeatedPassword;
+    @Transient
+    private boolean active;
+
+    public User(){}
 
     public String getUsername() {
         return username;
@@ -47,21 +51,20 @@ public class User {
         this.repeatedPassword = repeatedPassword;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User(){}
-
-    public User(String username, String password, String email) {
-        this.id = null;
-        this.username = username;
-        this.password = password;
-        this.email = email;
     }
 
     public String validateLogin(UserRepository userRepository){
