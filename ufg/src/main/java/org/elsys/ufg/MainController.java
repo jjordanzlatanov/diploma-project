@@ -56,6 +56,6 @@ public class MainController{
 
         userRepository.save(user);
 
-        return null;
+        return "sent_confirmation_mail";
     }
 }
