@@ -42,5 +42,12 @@ public class ErrorController {
         model.addAttribute("user", new User());
         return exception.getPage();
     }
+
+    @ExceptionHandler(UserNotActivatedException.class)
+    public String userNotActivatedException(Model model, UserNotActivatedException exception){
+        model.addAttribute("errorMessage", exception.getErrorMessage());
+        model.addAttribute("user", new User());
+        return exception.getPage();
+    }
 }
 

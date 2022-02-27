@@ -31,6 +31,8 @@ public class MainController{
             case "emptyField" -> throw new EmptyInputException("login");
 
             case "does not exist" -> throw new UserDoesNotExistException();
+
+            case "not activated" -> throw new UserNotActivatedException();
         }
 
         return null;

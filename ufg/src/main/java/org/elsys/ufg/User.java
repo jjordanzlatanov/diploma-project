@@ -15,7 +15,7 @@ public class User {
     @Transient
     private String repeatedPassword;
     @Transient
-    private boolean active;
+    private boolean activated;
 
     public User(){}
 
@@ -51,12 +51,12 @@ public class User {
         this.repeatedPassword = repeatedPassword;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isActivated() {
+        return activated;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setActivity(boolean activated) {
+        this.activated = activated;
     }
 
     public Integer getId() {
@@ -78,6 +78,10 @@ public class User {
 
         if(!userRepository.existsByUsernameAndPassword(username, password)){
             return "does not exist";
+        }
+
+        if(!activated){
+            return "not activated";
         }
 
         return "valid";
