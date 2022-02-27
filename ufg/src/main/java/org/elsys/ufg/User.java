@@ -76,7 +76,7 @@ public class User {
             return "emptyField";
         }
 
-        if(!userRepository.existsByUsernameAndPassword(username, password)){
+        if(userRepository.existsByUsernameAndPassword(username, password) == null){
             return "does not exist";
         }
 
@@ -96,11 +96,11 @@ public class User {
             return "emptyField";
         }
 
-        if(userRepository.existsByUsername(username)){
+        if(userRepository.existsByUsername(username) != null){
             return "username is already taken";
         }
 
-        if(userRepository.existsByEmail(email)){
+        if(userRepository.existsByEmail(email) != null){
             return "email is already taken";
         }
 
