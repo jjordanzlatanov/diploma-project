@@ -1,5 +1,6 @@
-# Intellij
+# Spring Boot
 .idea
+.mvn
 target
 
 # Gam

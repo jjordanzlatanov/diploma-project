@@ -6,7 +6,6 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @Table("users")
 public class User {
-
     @Id
     private Integer id;
     private String username;
@@ -18,6 +17,14 @@ public class User {
     private boolean activated;
 
     public User(){}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -55,16 +62,8 @@ public class User {
         return activated;
     }
 
-    public void setActivity(boolean activated) {
+    public void setActivated(boolean activated) {
         this.activated = activated;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String validateLogin(UserRepository userRepository){

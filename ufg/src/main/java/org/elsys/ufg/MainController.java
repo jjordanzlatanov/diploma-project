@@ -12,6 +12,9 @@ public class MainController{
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    EmailTokenRepository emailTokenRepository;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(){
         return "home";
@@ -58,6 +61,9 @@ public class MainController{
 
         userRepository.save(user);
 
+        EmailToken emailToken = new EmailToken(emailTokenRepository, user.getId());
+
+        emailTokenRepository.save(emailToken);
 
         return "sent_confirmation_mail";
     }
