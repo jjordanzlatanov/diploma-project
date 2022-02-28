@@ -27,9 +27,13 @@ public class MainController{
     }
 
     @RequestMapping(value = "/login", method = {RequestMethod.POST})
-    public String postLogin(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect) {
+    public String postLogin(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect, @RequestParam(value = "login", required = false) String loginRedirect) {
         if (registerRedirect != null) {
             return "redirect:/register";
+        }
+
+        if(loginRedirect != null){
+            return "redirect:/login";
         }
 
         user.validateLogin(userRepository);
@@ -56,16 +60,17 @@ public class MainController{
     }
 
     @RequestMapping(value = "/confirmemail/{token}", method = RequestMethod.GET)
-    public String confirmEmail(@PathVariable("token") String token){
+    public String getConfirmEmail(@PathVariable("token") String token){
         if(emailTokenRepository.existsByToken(token) != null){
             Instant start = Instant.parse(emailTokenRepository.findTimestampByToken(token));
             Instant end = Instant.now();
 
             if(Duration.between(start, end).toHours() <= 24){
-                System.out.println("Here");
+                userRepository.activateById(emailTokenRepository.findUserIdByToken(token));
+                emailTokenRepository.deleteByToken(token);
             }
         }
 
-        return "home";
+        return "email_confirmation_success";
     }
 }

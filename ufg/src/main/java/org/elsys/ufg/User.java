@@ -68,6 +68,10 @@ public class User {
     }
 
     public void validateLogin(UserRepository userRepository){
+        if(username == null || password == null){
+            return;
+        }
+
         if(username.equals("") || password.equals("")){
             throw new EmptyInputException("login");
         }
@@ -82,6 +86,10 @@ public class User {
     }
 
     public void validateRegister(UserRepository userRepository){
+        if(username == null || password == null || email == null || repeatedPassword == null){
+            return;
+        }
+
         if(username.equals("") || password.equals("") || email.equals("") || repeatedPassword.equals("")){
             throw new EmptyInputException("register");
         }

@@ -1,5 +1,6 @@
 package org.elsys.ufg;
 
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,4 +16,8 @@ public interface UserRepository extends CrudRepository<User, Integer> {
 
     @Query("SELECT 1 FROM users WHERE email = :email LIMIT 1")
     Boolean existsByEmail(@Param("email") String email);
+
+    @Modifying
+    @Query("UPDATE users SET activated = 1 WHERE id = :id")
+    void activateById(@Param("id") Integer id);
 }
