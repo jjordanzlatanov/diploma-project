@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class MainController{
     @Autowired
     UserRepository userRepository;
-
-    @Autowired
     EmailTokenRepository emailTokenRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)

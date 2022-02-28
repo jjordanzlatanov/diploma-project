@@ -12,7 +12,7 @@ public class EmailToken {
     @Id
     private Integer id;
     private String token;
-    private Integer userId;
+    private Integer user_id;
     private String timestamp;
     @Transient
     private Instant timer;
@@ -23,7 +23,7 @@ public class EmailToken {
             token = String.valueOf(UUID.randomUUID());
         }
 
-        this.userId = userId;
+        this.user_id = userId;
         timer = Instant.now();
         timestamp = timer.toString();
     }
@@ -45,11 +45,11 @@ public class EmailToken {
     }
 
     public Integer getUserId() {
-        return userId;
+        return user_id;
     }
 
     public void setUserId(Integer userId) {
-        this.userId = userId;
+        this.user_id = userId;
     }
 
     public String getTimestamp() {
