@@ -14,8 +14,6 @@ public class EmailToken {
     private String token;
     private Integer user_id;
     private String timestamp;
-    @Transient
-    private Instant timer;
 
     public EmailToken(EmailTokenRepository emailTokenRepository, Integer userId){
         token = String.valueOf(UUID.randomUUID());
@@ -24,8 +22,7 @@ public class EmailToken {
         }
 
         this.user_id = userId;
-        timer = Instant.now();
-        timestamp = timer.toString();
+        this.timestamp = Instant.now().toString();
     }
 
     public Integer getId() {
@@ -58,13 +55,5 @@ public class EmailToken {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public Instant getTimer() {
-        return timer;
-    }
-
-    public void setTimer(Instant timer) {
-        this.timer = timer;
     }
 }

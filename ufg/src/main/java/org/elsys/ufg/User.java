@@ -11,12 +11,13 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private Boolean activated;
     @Transient
     private String repeatedPassword;
-    @Transient
-    private boolean activated;
 
-    public User(){}
+    public User(){
+        this.activated = false;
+    }
 
     public Integer getId() {
         return id;
@@ -66,43 +67,31 @@ public class User {
         this.activated = activated;
     }
 
-    public String validateLogin(UserRepository userRepository){
-        if(username == null || password == null){
-            return "show";
-        }
-
+    public void validateLogin(UserRepository userRepository){
         if(username.equals("") || password.equals("")){
-            return "emptyField";
+            throw new EmptyInputException("login");
         }
 
         if(userRepository.existsByUsernameAndPassword(username, password) == null){
-            return "does not exist";
+            throw new UserDoesNotExistException();
         }
 
         if(!activated){
-            return "not activated";
+            throw new UserNotActivatedException();
         }
-
-        return "valid";
     }
 
-    public String validateRegister(UserRepository userRepository){
-        if(username == null || password == null || email == null || repeatedPassword == null){
-            return "show";
-        }
-
+    public void validateRegister(UserRepository userRepository){
         if(username.equals("") || password.equals("") || email.equals("") || repeatedPassword.equals("")){
-            return "emptyField";
+            throw new EmptyInputException("register");
         }
 
         if(userRepository.existsByUsername(username) != null){
-            return "username is already taken";
+            throw new UsernameIsTakenException();
         }
 
         if(userRepository.existsByEmail(email) != null){
-            return "email is already taken";
+            throw new EmailIsTakenException();
         }
-
-        return "valid";
     }
 }

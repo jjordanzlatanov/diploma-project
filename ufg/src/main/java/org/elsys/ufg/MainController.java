@@ -2,15 +2,18 @@ package org.elsys.ufg;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
+import java.time.Instant;
 
 @Controller
 public class MainController{
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
     EmailTokenRepository emailTokenRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -18,44 +21,30 @@ public class MainController{
         return "home";
     }
 
-    @RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
-    public String login(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect) {
-        if (registerRedirect != null && registerRedirect.equals("REGISTER")) {
+    @RequestMapping(value = "/login", method = {RequestMethod.GET})
+    public String getLogin(@ModelAttribute("user") User user) {
+        return "login";
+    }
+
+    @RequestMapping(value = "/login", method = {RequestMethod.POST})
+    public String postLogin(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect) {
+        if (registerRedirect != null) {
             return "redirect:/register";
         }
 
-        switch (user.validateLogin(userRepository)) {
-            case "show" -> {
-                return "login";
-            }
+        user.validateLogin(userRepository);
 
-            case "emptyField" -> throw new EmptyInputException("login");
-
-            case "does not exist" -> throw new UserDoesNotExistException();
-
-            case "not activated" -> throw new UserNotActivatedException();
-        }
-
-        return null;
+        return "login";
     }
 
-    @RequestMapping(value = "/register", method = {RequestMethod.POST, RequestMethod.GET})
-    public String register(@ModelAttribute("user") User user){
-        switch (user.validateRegister(userRepository)){
-            case "show" -> {
-                return "register";
-            }
+    @RequestMapping(value = "/register", method = {RequestMethod.GET})
+    public String getRegister(@ModelAttribute("user") User user){
+        return "register";
+    }
 
-            case "emptyField" -> throw new EmptyInputException("register");
-
-            case "username is already taken" -> throw new UsernameIsTakenException();
-
-            case "email is already taken" -> throw new EmailIsTakenException();
-        }
-
-        if(!user.getPassword().equals(user.getRepeatedPassword())){
-            throw new PasswordRepeatPasswordMismatchException();
-        }
+    @RequestMapping(value = "/register", method = {RequestMethod.POST})
+    public String postRegister(@ModelAttribute("user") User user){
+        user.validateRegister(userRepository);
 
         userRepository.save(user);
 
@@ -64,5 +53,19 @@ public class MainController{
         emailTokenRepository.save(emailToken);
 
         return "sent_confirmation_mail";
+    }
+
+    @RequestMapping(value = "/confirmemail/{token}", method = RequestMethod.GET)
+    public String confirmEmail(@PathVariable("token") String token){
+        if(emailTokenRepository.existsByToken(token) != null){
+            Instant start = Instant.parse(emailTokenRepository.findTimestampByToken(token));
+            Instant end = Instant.now();
+
+            if(Duration.between(start, end).toHours() <= 24){
+                System.out.println("Here");
+            }
+        }
+
+        return "home";
     }
 }
