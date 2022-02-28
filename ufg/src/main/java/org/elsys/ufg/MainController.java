@@ -21,19 +21,19 @@ public class MainController{
         return "home";
     }
 
-    @RequestMapping(value = "/login", method = {RequestMethod.GET})
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String getLogin(@ModelAttribute("user") User user) {
         return "login";
     }
 
-    @RequestMapping(value = "/login", method = {RequestMethod.POST})
-    public String postLogin(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect, @RequestParam(value = "login", required = false) String loginRedirect) {
-        if (registerRedirect != null) {
-            return "redirect:/register";
-        }
-
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String postLogin(@ModelAttribute("user") User user, @RequestParam(value = "login", required = false) String loginRedirect, @RequestParam(value = "register", required = false) String registerRedirect) {
         if(loginRedirect != null){
             return "redirect:/login";
+        }
+
+        if (registerRedirect != null) {
+            return "redirect:/register";
         }
 
         user.validateLogin(userRepository);
@@ -41,13 +41,17 @@ public class MainController{
         return "login";
     }
 
-    @RequestMapping(value = "/register", method = {RequestMethod.GET})
+    @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegister(@ModelAttribute("user") User user){
         return "register";
     }
 
-    @RequestMapping(value = "/register", method = {RequestMethod.POST})
-    public String postRegister(@ModelAttribute("user") User user){
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public String postRegister(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect){
+        if(registerRedirect != null){
+            return "redirect:/register";
+        }
+
         user.validateRegister(userRepository);
 
         userRepository.save(user);
@@ -60,17 +64,21 @@ public class MainController{
     }
 
     @RequestMapping(value = "/confirmemail/{token}", method = RequestMethod.GET)
-    public String getConfirmEmail(@PathVariable("token") String token){
+    public String getConfirmEmail(Model model, @PathVariable("token") String token){
         if(emailTokenRepository.existsByToken(token) != null){
             Instant start = Instant.parse(emailTokenRepository.findTimestampByToken(token));
             Instant end = Instant.now();
 
-            if(Duration.between(start, end).toHours() <= 24){
+            if(Duration.between(start, end).toHours() < 24){
                 userRepository.activateById(emailTokenRepository.findUserIdByToken(token));
-                emailTokenRepository.deleteByToken(token);
+            }else{
+                model.addAttribute("expired", "expired");
+                userRepository.deleteById(emailTokenRepository.findUserIdByToken(token));
             }
+
+            emailTokenRepository.deleteByToken(token);
         }
 
-        return "email_confirmation_success";
+        return "email_confirmation";
     }
 }

@@ -80,7 +80,7 @@ public class User {
             throw new UserDoesNotExistException();
         }
 
-        if(!activated){
+        if(!userRepository.getActivatedStateByUsername(username)){
             throw new UserNotActivatedException();
         }
     }

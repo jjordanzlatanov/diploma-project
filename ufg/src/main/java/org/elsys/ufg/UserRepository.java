@@ -20,4 +20,11 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     @Modifying
     @Query("UPDATE users SET activated = 1 WHERE id = :id")
     void activateById(@Param("id") Integer id);
+
+    @Modifying
+    @Query("DELETE FROM users WHERE id = :id")
+    void deleteById(@Param("id") Integer id);
+
+    @Query("SELECT activated FROM users WHERE username = :username")
+    Boolean getActivatedStateByUsername(@Param("username") String username);
 }
