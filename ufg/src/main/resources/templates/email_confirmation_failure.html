@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Email Sent</title>
+  <!-- Used in production -->
+  <link rel="stylesheet" href="/email_confirmation.css"/>
+
+  <!-- Used for development through VS Code Live Server extension -->
+  <link rel="stylesheet" href="../static/email_confirmation.css"/>
+</head>
+
+<body>
+  <div class="flex-container">
+    <div class="content-container">
+      <div class="text-container">
+        <h1>Token Expired</h1>
+        <h1>Try To Register Again</h1>
+      </div>
+      <div class="form-container">
+        <form action="/register" method="post">
+          <input type="submit" name="register" value="REGISTER" class="button">
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

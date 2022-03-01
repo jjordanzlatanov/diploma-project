@@ -70,7 +70,7 @@ public class MainController{
         MimeMessage mailMessage = emailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage, true, "UTF-8");
         messageHelper.setFrom("officialufggame@gmail.com");
-        messageHelper.setTo(user.getEmail()); // <a href="https://www.w3schools.com">Visit W3Schools</a>
+        messageHelper.setTo(user.getEmail());
         messageHelper.setText("Press Link to Confirm Email: <a href=\"http://localhost:8080/confirmemail/" + emailToken.getToken() + "\">" + "Link</a>", true);
         emailSender.send(mailMessage);
 
@@ -79,20 +79,23 @@ public class MainController{
 
     @RequestMapping(value = "/confirmemail/{token}", method = RequestMethod.GET)
     public String getConfirmEmail(Model model, @PathVariable("token") String token){
-        if(emailTokenRepository.existsByToken(token) != null){
-            Instant start = Instant.parse(emailTokenRepository.findTimestampByToken(token));
-            Instant end = Instant.now();
-
-            if(Duration.between(start, end).toHours() < 24){
-                userRepository.activateById(emailTokenRepository.findUserIdByToken(token));
-            }else{
-                model.addAttribute("expired", "expired");
-                userRepository.deleteById(emailTokenRepository.findUserIdByToken(token));
-            }
-
-            emailTokenRepository.deleteByToken(token);
+        if(emailTokenRepository.existsByToken(token) == null){
+            return "email_confirmation_failure";
         }
 
-        return "email_confirmation";
+        Instant start = Instant.parse(emailTokenRepository.findTimestampByToken(token));
+        Instant end = Instant.now();
+
+        Integer user_id = emailTokenRepository.findUserIdByToken(token);
+        emailTokenRepository.deleteByToken(token);
+
+        if(Duration.between(start, end).toHours() >= 24){
+            userRepository.deleteById(user_id);
+            return "email_confirmation_failure";
+        }
+
+        userRepository.activateById(user_id);
+
+        return "email_confirmation_success";
     }
 }
