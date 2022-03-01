@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 
 @Controller
 public class MainController{
@@ -23,6 +24,9 @@ public class MainController{
     @Autowired
     private JavaMailSender emailSender;
 
+    @Autowired
+    private RedirectHandler redirectHandler;
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(){
         return "home";
@@ -34,13 +38,11 @@ public class MainController{
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String postLogin(@ModelAttribute("user") User user, @RequestParam(value = "login", required = false) String loginRedirect, @RequestParam(value = "register", required = false) String registerRedirect) {
-        if(loginRedirect != null){
-            return "redirect:/login";
-        }
+    public String postLogin(@ModelAttribute("user") User user, @RequestParam Map<String, String> params) {
+        String redirect = redirectHandler.redirection(params);
 
-        if (registerRedirect != null) {
-            return "redirect:/register";
+        if(redirect != null){
+            return redirect;
         }
 
         user.validateLogin(userRepository);
@@ -54,9 +56,11 @@ public class MainController{
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String postRegister(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect) throws MessagingException {
-        if(registerRedirect != null){
-            return "redirect:/register";
+    public String postRegister(@ModelAttribute("user") User user, @RequestParam Map<String, String> params) throws MessagingException {
+        String redirect = redirectHandler.redirection(params);
+
+        if(redirect != null){
+            return redirect;
         }
 
         user.validateRegister(userRepository);

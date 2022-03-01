@@ -1,1 +1,1 @@
-https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.6.4&packaging=jar&jvmVersion=17&groupId=org.elsys.ufg&artifactId=ufg&name=ufg&description=Untitled%20Factory%20Game&packageName=org.elsys.ufg&dependencies=web,thymeleaf,data-mongodb,data-jdbc,jdbc,mysql,mail
+https://start.spring.io/#!type=maven-project&language=java&platformVersion=2.6.4&packaging=jar&jvmVersion=17&groupId=org.elsys.ufg&artifactId=ufg&name=ufg&description=Untitled%20Factory%20Game&packageName=org.elsys.ufg&dependencies=web,thymeleaf,data-mongodb,data-jdbc,jdbc,mysql,mail,session
