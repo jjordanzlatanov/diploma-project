@@ -1,20 +1,27 @@
 package org.elsys.ufg;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.time.Duration;
 import java.time.Instant;
 
 @Controller
 public class MainController{
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    EmailTokenRepository emailTokenRepository;
+    private EmailTokenRepository emailTokenRepository;
+
+    @Autowired
+    private JavaMailSender emailSender;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(){
@@ -47,7 +54,7 @@ public class MainController{
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public String postRegister(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect){
+    public String postRegister(@ModelAttribute("user") User user, @RequestParam(value = "register", required = false) String registerRedirect) throws MessagingException {
         if(registerRedirect != null){
             return "redirect:/register";
         }
@@ -59,6 +66,13 @@ public class MainController{
         EmailToken emailToken = new EmailToken(emailTokenRepository, user.getId());
 
         emailTokenRepository.save(emailToken);
+
+        MimeMessage mailMessage = emailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mailMessage, true, "UTF-8");
+        messageHelper.setFrom("officialufggame@gmail.com");
+        messageHelper.setTo(user.getEmail()); // <a href="https://www.w3schools.com">Visit W3Schools</a>
+        messageHelper.setText("Press Link to Confirm Email: <a href=\"http://localhost:8080/confirmemail/" + emailToken.getToken() + "\">" + "Link</a>", true);
+        emailSender.send(mailMessage);
 
         return "sent_confirmation_mail";
     }
