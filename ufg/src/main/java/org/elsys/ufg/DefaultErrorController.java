@@ -15,9 +15,9 @@ public class DefaultErrorController implements ErrorController {
         int statusCode = (int) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if(statusCode == HttpStatus.NOT_FOUND.value()) {
-            return "redirect:/";
+            return "redirect:/home";
         }
 
-        return "redirect:/";
+        return "redirect:/home";
     }
 }

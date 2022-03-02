@@ -33,7 +33,7 @@ public class MainController{
     private CookieService cookieService;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String getHome(HttpServletRequest request, HttpServletResponse response){
+    public String getHome(HttpServletRequest request){
         Cookie cookie = cookieService.getCookie("username", request);
         return "home";
     }
