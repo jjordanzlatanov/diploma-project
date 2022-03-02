@@ -3,6 +3,7 @@ package org.elsys.ufg;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,11 +11,8 @@ import java.util.Map;
 @Service
 public class CookieFactory {
     private Cookie cookie;
-    private Map<String, Cookie> cookieHolder;
 
-    public CookieFactory(){
-        cookieHolder = new HashMap<>();
-    }
+    public CookieFactory(){}
 
     public CookieFactory create(String name, String value){
         cookie = new Cookie(name, value);
@@ -32,17 +30,10 @@ public class CookieFactory {
     }
 
     public void build(HttpServletResponse response){
-        cookieHolder.put(cookie.getName(), cookie);
         response.addCookie(cookie);
     }
 
-    public void delete(String name, HttpServletResponse response){
-        if(!cookieHolder.containsKey(name)){
-            return;
-        }
-
-        cookie = cookieHolder.get(name);
-        cookieHolder.remove(name);
+    public void delete(String name, HttpServletRequest request, HttpServletResponse response){
         cookie.setValue("");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
