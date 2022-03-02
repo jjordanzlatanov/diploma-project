@@ -1,5 +1,6 @@
 package org.elsys.ufg;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -14,6 +15,9 @@ import java.util.stream.Stream;
 public class CookieService {
     private Cookie cookie;
     private Map<String, Cookie> cookies;
+
+    @Autowired
+    UserRepository userRepository;
 
     public CookieService(){}
 
@@ -63,5 +67,11 @@ public class CookieService {
         cookie.setMaxAge(0);
 
         response.addCookie(cookie);
+    }
+
+    public Boolean loggedUser(HttpServletRequest request){
+        updateCookies(request);
+
+        return !cookies.isEmpty() && userRepository.existsByUsernameAndPassword(cookies.get("username").getValue(), cookies.get("password").getValue()) != null;
     }
 }

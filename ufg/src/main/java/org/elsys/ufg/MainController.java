@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
@@ -34,7 +33,10 @@ public class MainController{
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHome(HttpServletRequest request){
-        Cookie cookie = cookieService.getCookie("username", request);
+        if(!cookieService.loggedUser(request)){
+            return "default_home";
+        }
+
         return "home";
     }
 
@@ -54,6 +56,7 @@ public class MainController{
         user.validateLogin(userRepository);
 
         cookieService.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
+        cookieService.create("password", user.getPassword()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
         return "redirect:/home";
     }
 
