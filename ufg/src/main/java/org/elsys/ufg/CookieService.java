@@ -7,24 +7,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
-public class CookieFactory {
+public class CookieService {
     private Cookie cookie;
+    private Map<String, Cookie> cookies;
 
-    public CookieFactory(){}
+    public CookieService(){}
 
-    public CookieFactory create(String name, String value){
+    public CookieService create(String name, String value){
         cookie = new Cookie(name, value);
         return this;
     }
 
-    public CookieFactory setMaxAge(Integer age){
+    public CookieService setMaxAge(Integer age){
         cookie.setMaxAge(age);
         return this;
     }
 
-    public CookieFactory setPath(String path){
+    public CookieService setPath(String path){
         cookie.setPath(path);
         return this;
     }
@@ -33,9 +36,32 @@ public class CookieFactory {
         response.addCookie(cookie);
     }
 
-    public void delete(String name, HttpServletRequest request, HttpServletResponse response){
+    public void updateCookies(HttpServletRequest request){
+        if(request.getCookies() == null){
+            cookies = new HashMap<>();
+            return;
+        }
+
+        cookies = Stream.of(request.getCookies()).collect(Collectors.toMap(Cookie::getName, Cookie -> Cookie));
+    }
+
+    public Cookie getCookie(String name, HttpServletRequest request){
+        updateCookies(request);
+
+        return cookies.get(name);
+    }
+
+    public void deleteCookie(String name, HttpServletRequest request, HttpServletResponse response){
+        updateCookies(request);
+
+        if(cookies.isEmpty()){
+            return;
+        }
+
+        cookie = cookies.get(name);
         cookie.setValue("");
         cookie.setMaxAge(0);
+
         response.addCookie(cookie);
     }
 }

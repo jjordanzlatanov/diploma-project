@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,10 +30,11 @@ public class MainController{
     private RedirectHandler redirectHandler;
 
     @Autowired
-    private CookieFactory cookieFactory;
+    private CookieService cookieService;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String getHome(){
+    public String getHome(HttpServletRequest request, HttpServletResponse response){
+        Cookie cookie = cookieService.getCookie("username", request);
         return "home";
     }
 
@@ -54,12 +53,12 @@ public class MainController{
 
         user.validateLogin(userRepository);
 
-        cookieFactory.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/home").build(response);
+        cookieService.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
         return "redirect:/home";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String getRegister(@ModelAttribute("user") User user){
+    public String getRegister(@ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response){
         return "register";
     }
 
