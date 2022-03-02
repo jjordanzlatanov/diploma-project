@@ -18,13 +18,13 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     Boolean existsByEmail(@Param("email") String email);
 
     @Modifying
-    @Query("UPDATE users SET activated = 1 WHERE id = :id")
+    @Query("UPDATE users SET activated = 1 WHERE id = :id LIMIT 1")
     void activateById(@Param("id") Integer id);
 
     @Modifying
-    @Query("DELETE FROM users WHERE id = :id")
+    @Query("DELETE FROM users WHERE id = :id LIMIT 1")
     void deleteById(@Param("id") Integer id);
 
-    @Query("SELECT activated FROM users WHERE username = :username")
+    @Query("SELECT activated FROM users WHERE username = :username LIMIT 1")
     Boolean getActivatedStateByUsername(@Param("username") String username);
 }

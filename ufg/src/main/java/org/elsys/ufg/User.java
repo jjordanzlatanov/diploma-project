@@ -4,8 +4,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.io.Serializable;
+
 @Table("users")
-public class User {
+public class User implements Serializable {
     @Id
     private Integer id;
     private String username;

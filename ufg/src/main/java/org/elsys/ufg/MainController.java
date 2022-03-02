@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -27,8 +31,11 @@ public class MainController{
     @Autowired
     private RedirectHandler redirectHandler;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String home(){
+    @Autowired
+    private CookieFactory cookieFactory;
+
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    public String getHome(){
         return "home";
     }
 
@@ -38,7 +45,7 @@ public class MainController{
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String postLogin(@ModelAttribute("user") User user, @RequestParam Map<String, String> params) {
+    public String postLogin(@ModelAttribute("user") User user, @RequestParam Map<String, String> params, HttpServletResponse response) {
         String redirect = redirectHandler.redirection(params);
 
         if(redirect != null){
@@ -47,7 +54,8 @@ public class MainController{
 
         user.validateLogin(userRepository);
 
-        return "login";
+        cookieFactory.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/home").build(response);
+        return "redirect:/home";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -82,7 +90,7 @@ public class MainController{
     }
 
     @RequestMapping(value = "/confirmemail/{token}", method = RequestMethod.GET)
-    public String getConfirmEmail(Model model, @PathVariable("token") String token){
+    public String getConfirmEmail(@PathVariable("token") String token){
         if(emailTokenRepository.existsByToken(token) == null){
             return "email_confirmation_failure";
         }
