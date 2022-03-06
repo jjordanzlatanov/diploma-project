@@ -33,7 +33,7 @@ public class MainController{
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHome(HttpServletRequest request){
-        if(!cookieService.loggedUser(request)){
+        if(!cookieService.isLogged(request)){
             return "default_home";
         }
 
@@ -55,8 +55,13 @@ public class MainController{
 
         user.validateLogin(userRepository);
 
-        cookieService.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
-        cookieService.create("password", user.getPassword()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
+        cookieService.login(user, response);
+        return "redirect:/home";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String getLogout(HttpServletRequest request, HttpServletResponse response){
+        cookieService.logout(request, response);
         return "redirect:/home";
     }
 

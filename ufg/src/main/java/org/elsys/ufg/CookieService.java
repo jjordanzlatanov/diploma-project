@@ -69,9 +69,32 @@ public class CookieService {
         response.addCookie(cookie);
     }
 
-    public Boolean loggedUser(HttpServletRequest request){
+    public void clearCookies(HttpServletRequest request, HttpServletResponse response){
+        updateCookies(request);
+
+        for(Map.Entry<String, Cookie> entry : cookies.entrySet()){
+            cookie = entry.getValue();
+
+            cookie.setValue("");
+            cookie.setMaxAge(0);
+
+            response.addCookie(cookie);
+        }
+    }
+
+    public Boolean isLogged(HttpServletRequest request){
         updateCookies(request);
 
         return !cookies.isEmpty() && userRepository.existsByUsernameAndPassword(cookies.get("username").getValue(), cookies.get("password").getValue()) != null;
+    }
+
+    public void login(User user, HttpServletResponse response){
+        this.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
+        this.create("password", user.getPassword()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response){
+        this.deleteCookie("username", request, response);
+        this.deleteCookie("password", request, response);
     }
 }
