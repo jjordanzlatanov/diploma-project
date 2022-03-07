@@ -6,28 +6,19 @@
   <title>Home</title>
   <!-- Used in production -->
   <link rel="stylesheet" href="/default_home.css"/>
+
   <!-- Used for development through VS Code Live Server extension -->
   <link rel="stylesheet" href="../static/default_home.css"/>
-  <script th:src="@{/phaser.js}"></script>
-  <script th:src="@{/game.js}"></script>
 </head>
 
 <body>
-  <div class="flex-container">
-    <div class="content-container">
-      <div class="form-container">
-        <h1>Welcome to UFG</h1>
-        <div class="input-container">
-          <form action="/login" method="post">
-            <input type="submit" name="login" value="LOGIN" class="button">
-          </form>
-          <form action="/register" method="post">
-            <input type="submit" name="register" value="REGISTER" class="button">
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Used in production -->
+  <script th:src="@{/phaser.js}"></script>
+  <script th:src="@{/game.js}"></script>
+
+  <!-- Used for development through VS Code Live Server extension -->
+  <script src="../static/phaser.js"></script>
+  <script src="../static/game.js"></script>
 </body>
 
 </html>
