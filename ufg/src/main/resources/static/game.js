@@ -1,5 +1,9 @@
 /** @type {import("./phaser")} */
 
+window.addEventListener('resize', () => {
+    window.location.reload()
+})
+
 let config = {
     type: Phaser.AUTO,
     width: window.innerWidth,

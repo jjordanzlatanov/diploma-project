@@ -34,10 +34,10 @@ public class MainController{
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHome(HttpServletRequest request){
         if(!cookieService.isLogged(request)){
-            return "default_home";
+            return "home";
         }
 
-        return "home";
+        return "game";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
