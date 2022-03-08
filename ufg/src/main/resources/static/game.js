@@ -13,7 +13,7 @@ class GameScene extends Phaser.Scene{
 
     }
 
-    update(){
+    update(time, delta){
 
     }
 }
@@ -23,13 +23,7 @@ let config = {
     width: window.innerWidth,
     height: window.innerHeight,
     backgroundColor: '#000',
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: {y: 0, x: 0},
-            debug: false
-        }
-    }
+    scene: [GameScene]
 }
 
 let game = new Phaser.Game(config)

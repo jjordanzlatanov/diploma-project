@@ -1,0 +1,3 @@
+Phaser - https://github.com/photonstorm/phaser
+Phaser docs - https://github.com/photonstorm/phaser3-docs
+Phaser examples - https://github.com/photonstorm/phaser3-examples
