@@ -1,14 +1,28 @@
 /** @type {import("./phaser")} */
 
-window.addEventListener('resize', () => {
-    window.location.reload()
-})
+class GameScene extends Phaser.Scene{
+    constructor(){
+
+    }
+
+    preload(){
+        
+    }
+
+    create(){
+
+    }
+
+    update(){
+
+    }
+}
 
 let config = {
     type: Phaser.AUTO,
     width: window.innerWidth,
     height: window.innerHeight,
-    backgroundColor: '#123456',
+    backgroundColor: '#000',
     physics: {
         default: 'arcade',
         arcade: {
@@ -19,3 +33,7 @@ let config = {
 }
 
 let game = new Phaser.Game(config)
+
+window.addEventListener('resize', () => {
+    window.location.reload()
+})
