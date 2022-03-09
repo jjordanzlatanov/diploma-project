@@ -1,5 +1,21 @@
 /** @type {import("./phaser")} */
 
+class MineArea{
+    constructor(type, startX, startY, endX, endY){
+        this.type = type
+        this.startX = startX
+        this.startY = startY
+        this.endX = endX
+        this.endY = endY
+    }
+}
+
+let coalArea = new MineArea('coal', 110, 20, 500, 200)
+let ironArea = new MineArea('raw iron', 110, 20, 500, 200)
+let copperArea = new MineArea('raw copper', 110, 20, 500, 200)
+
+let key1
+
 class GameScene extends Phaser.Scene{
     constructor(){
         super('game')
@@ -10,21 +26,50 @@ class GameScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('grass', '../assets/grass.png')
+        this.load.image('grass', '../assets/grass2.png')
+        this.load.image('coal', '../assets/coal.png')
+        this.load.image('raw iron', '../assets/raw iron.png')
+        this.load.image('raw copper', '../assets/raw copper.png')
+        
+        this.load.image('miner', '../assets/miner.png')
     }
 
     create(){
+        key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
+
         let width = this.sys.game.config.width
         let height = this.sys.game.config.height
+        
 
-        for(let x = 0; x < width + 10; x += 39){
-            for(let y = 0; y < height + 10; y += 39){
+        for(let x = 0; x < width + 10; x += 640){
+            for(let y = 0; y < height + 10; y += 320){
                 this.add.sprite(x, y, 'grass')
+            }
+        }
+
+        for(let x = 110; x < 500; x += 30){
+            for(let y = 20; y < 200; y += 30){
+                this.add.sprite(x, y, 'coal')
+            }
+        }
+
+        for(let x = 630; x < 1100; x += 30){
+            for(let y = 20; y < 200; y += 30){
+                this.add.sprite(x, y, 'raw iron')
+            }
+        }
+
+        for(let x = 1230; x < 1700; x += 30){
+            for(let y = 20; y < 200; y += 30){
+                this.add.sprite(x, y, 'raw copper')
             }
         }
     }
 
     update(time, delta){
+        if(key1.isDown){
+            console.log('1')
+        }
     }
 }
 
