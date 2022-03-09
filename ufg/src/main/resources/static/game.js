@@ -26,10 +26,11 @@ class GameScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('grass', '../assets/grass2.png')
+        this.load.image('grass', '../assets/grass.png')
         this.load.image('coal', '../assets/coal.png')
-        this.load.image('raw iron', '../assets/raw iron.png')
-        this.load.image('raw copper', '../assets/raw copper.png')
+        this.load.image('iron-ore', '../assets/iron-ore.png')
+        this.load.image('copper-ore', '../assets/copper-ore.png')
+        
         
         this.load.image('miner', '../assets/miner.png')
     }
@@ -41,8 +42,8 @@ class GameScene extends Phaser.Scene{
         let height = this.sys.game.config.height
         
 
-        for(let x = 0; x < width + 10; x += 640){
-            for(let y = 0; y < height + 10; y += 320){
+        for(let x = 0; x < width + 10; x += 128){
+            for(let y = 0; y < height + 20; y += 128){
                 this.add.sprite(x, y, 'grass')
             }
         }
@@ -55,13 +56,13 @@ class GameScene extends Phaser.Scene{
 
         for(let x = 630; x < 1100; x += 30){
             for(let y = 20; y < 200; y += 30){
-                this.add.sprite(x, y, 'raw iron')
+                this.add.sprite(x, y, 'iron-ore')
             }
         }
 
         for(let x = 1230; x < 1700; x += 30){
             for(let y = 20; y < 200; y += 30){
-                this.add.sprite(x, y, 'raw copper')
+                this.add.sprite(x, y, 'copper-ore')
             }
         }
     }
