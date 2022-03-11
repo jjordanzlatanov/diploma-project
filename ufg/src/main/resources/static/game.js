@@ -14,6 +14,16 @@ let coalArea = new MineArea('coal', 110, 20, 500, 200)
 let ironArea = new MineArea('raw iron', 110, 20, 500, 200)
 let copperArea = new MineArea('raw copper', 110, 20, 500, 200)
 
+function getRandomInt(max) {
+    let number = Math.floor(Math.random() * max)
+    
+    while(number == 0){
+        number = Math.floor(Math.random() * max)
+    }
+
+    return number
+}
+
 let key1
 
 class GameScene extends Phaser.Scene{
@@ -26,13 +36,15 @@ class GameScene extends Phaser.Scene{
     }
 
     preload(){
-        this.load.image('grass', '../assets/grass.png')
+        this.load.image('grass1', '../assets/grass1.png')
+        this.load.image('grass2', '../assets/grass2.png')
+        this.load.image('grass3', '../assets/grass3.png')
+        this.load.image('grass4', '../assets/grass4.png')
+        this.load.image('grass5', '../assets/grass5.png')
+
         this.load.image('coal', '../assets/coal.png')
         this.load.image('iron-ore', '../assets/iron-ore.png')
         this.load.image('copper-ore', '../assets/copper-ore.png')
-        
-        
-        this.load.image('miner', '../assets/miner.png')
     }
 
     create(){
@@ -42,15 +54,15 @@ class GameScene extends Phaser.Scene{
         let height = this.sys.game.config.height
         
 
-        for(let x = 0; x < width + 10; x += 128){
-            for(let y = 0; y < height + 20; y += 128){
-                this.add.sprite(x, y, 'grass')
+        for(let x = 0; x < width + 10; x += 30){
+            for(let y = 0; y < height + 10; y += 30){
+                this.add.sprite(x, y, 'grass' + getRandomInt(5)).setOrigin(0, 0)
             }
         }
 
-        for(let x = 110; x < 500; x += 30){
-            for(let y = 20; y < 200; y += 30){
-                this.add.sprite(x, y, 'coal')
+        for(let x = 0; x < 500; x += 30){
+            for(let y = 0; y < 200; y += 30){
+                this.add.sprite(x, y, 'coal').setOrigin(0, 0)
             }
         }
 

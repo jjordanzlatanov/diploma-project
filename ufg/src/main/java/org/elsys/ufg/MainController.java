@@ -1,6 +1,10 @@
 package org.elsys.ufg;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.relational.core.sql.Select;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -10,6 +14,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.TabableView;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -30,6 +35,17 @@ public class MainController{
 
     @Autowired
     private CookieService cookieService;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String getTest(){
+        //mongoTemplate.save(new Machine(1, 1), "chunks");
+        //System.out.println(mongoTemplate.find(Query.query(Criteria.where("_class").is(Tile.class.getCanonicalName())), Tile.class, "chunks"));
+        System.out.println(mongoTemplate.find(new Query().ad, Tile.class, "chunks"));
+        return "home";
+    }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHome(HttpServletRequest request){
