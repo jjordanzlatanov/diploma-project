@@ -37,13 +37,13 @@ public class MainController{
     private CookieService cookieService;
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private GameStorageRepository gameStorageRepository;
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String getTest(){
-        //mongoTemplate.save(new Machine(1, 1), "chunks");
-        //System.out.println(mongoTemplate.find(Query.query(Criteria.where("_class").is(Tile.class.getCanonicalName())), Tile.class, "chunks"));
-        System.out.println(mongoTemplate.find(new Query().ad, Tile.class, "chunks"));
+        gameStorageRepository.save(new Grass(0, 0, 30, 30, "grass1"), "chunks");
+        System.out.println(gameStorageRepository.findAll(Grass.class, "chunks"));
+
         return "home";
     }
 
