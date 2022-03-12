@@ -42,6 +42,7 @@ public class MainController{
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String getTest(){
         gameStorageRepository.save(new Grass(0, 0, 30, 30, "grass1"), "chunks");
+        
         System.out.println(gameStorageRepository.findAll(Grass.class, "chunks"));
 
         return "home";
