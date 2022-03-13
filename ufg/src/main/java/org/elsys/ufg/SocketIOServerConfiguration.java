@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SocketIOServerConfiguration {
-    @Value("127.0.0.1")
+    @Value("localhost")
     private String host;
 
     @Value("3000")

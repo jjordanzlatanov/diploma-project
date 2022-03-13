@@ -1,4 +1,12 @@
-/** @type {import("./phaser")} */
+/** @type {import('./phaser')} */
+import { io } from './node_modules/socket.io-client/build/esm/index'
+
+let socket = io('http://localhost:3000')
+
+socket.on('connect', () => {
+    console.log('connected')
+})
+
 
 class MineArea{
     constructor(type, startX, startY, endX, endY){

@@ -1,0 +1,29 @@
+{
+  "name": "client-connect",
+  "version": "1.0.0",
+  "description": "Client connection to backend with socket.io",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjordanzlatanov/diploma-project.git"
+  },
+  "keywords": [
+    "client",
+    "connection",
+    "backend",
+    "socket.io",
+    "socket"
+  ],
+  "author": "Jordan Miroslavov Zlatanov",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/jjordanzlatanov/diploma-project/issues"
+  },
+  "homepage": "https://github.com/jjordanzlatanov/diploma-project#readme",
+  "dependencies": {
+    "socket.io-client": "^4.4.1"
+  }
+}

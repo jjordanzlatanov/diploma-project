@@ -7,9 +7,12 @@
   
   <!-- Used in production -->
   <link rel="stylesheet" href="/game.css"/>
+  <script th:src="@{/socket.io.js}"></script>
+  <script th:src="@{/socket.io-client}" type="module"></script>
 
   <!-- Used for development through VS Code Live Server extension -->
   <link rel="stylesheet" href="../static/game.css"/>
+  <script src="../static/socket.io.js"></script>
 </head>
 
 <body>

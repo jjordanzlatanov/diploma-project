@@ -5,3 +5,6 @@ target
 
 # Gam
 accountseed.txt
+
+# npm
+node_modules
