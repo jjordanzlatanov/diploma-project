@@ -50,8 +50,8 @@ public class SocketIOService {
             }
         });
 
-        socketIOServer.addEventListener("messageToServer", String.class, (client, data, ackRequest) -> {
-            System.out.println("Message from client " + data);
+        socketIOServer.addEventListener("messageToServer", ChatObject.class, (client, data, ackRequest) -> {
+            System.out.println("Message from " + data.getUserName() + ": " + data.getMessage());
         });
 
         socketIOServer.start();

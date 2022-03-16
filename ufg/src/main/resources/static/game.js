@@ -1,7 +1,6 @@
 /** @type {import('./phaser')} */
-/** @type {import('./socket.io')} */
 
-let socket = io.connect('http://localhost:3000')
+let socket = io('http://localhost:3000')
 
 socket.on('connect', () => {
     console.log('fasdasd')
@@ -10,6 +9,9 @@ socket.on('connect', () => {
 socket.on('message', (message) => {
     console.log(message)
 })
+
+socket.emit('messageToServer', {userName: 'john', message: 'hi im john'})
+
 
 function getRandomInt(max) {
     let number = Math.floor(Math.random() * max)
