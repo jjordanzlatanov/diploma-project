@@ -1,26 +1,15 @@
 /** @type {import('./phaser')} */
-import { io } from './node_modules/socket.io-client/build/esm/index'
+/** @type {import('./socket.io')} */
 
-let socket = io('http://localhost:3000')
+let socket = io.connect('http://localhost:3000')
 
 socket.on('connect', () => {
-    console.log('connected')
+    console.log('fasdasd')
 })
 
-
-class MineArea{
-    constructor(type, startX, startY, endX, endY){
-        this.type = type
-        this.startX = startX
-        this.startY = startY
-        this.endX = endX
-        this.endY = endY
-    }
-}
-
-let coalArea = new MineArea('coal', 110, 20, 500, 200)
-let ironArea = new MineArea('raw iron', 110, 20, 500, 200)
-let copperArea = new MineArea('raw copper', 110, 20, 500, 200)
+socket.on('message', (message) => {
+    console.log(message)
+})
 
 function getRandomInt(max) {
     let number = Math.floor(Math.random() * max)
@@ -40,7 +29,7 @@ class GameScene extends Phaser.Scene{
     }
 
     init(){
-
+        
     }
 
     preload(){
@@ -49,17 +38,29 @@ class GameScene extends Phaser.Scene{
         this.load.image('grass3', '../assets/grass3.png')
         this.load.image('grass4', '../assets/grass4.png')
         this.load.image('grass5', '../assets/grass5.png')
+        this.load.image('pipe-corner-down-left', '../assets/pipe-corner-down-left.png')
+        this.load.image('pipe-corner-down-right', '../assets/pipe-corner-down-right.png')
+        this.load.image('pipe-corner-up-left', '../assets/pipe-corner-up-left.png')
+        this.load.image('pipe-corner-up-right', '../assets/pipe-corner-up-right.png')
+        this.load.image('pipe-straight-horizontal', '../assets/pipe-straight-horizontal.png')
+        this.load.image('pipe-straight-vertical', '../assets/pipe-straight-vertical.png')
+
 
         this.load.image('coal', '../assets/coal.png')
         this.load.image('iron-ore', '../assets/iron-ore.png')
         this.load.image('copper-ore', '../assets/copper-ore.png')
+
+        this.load.image('burner-drill', '../assets/burner-drill.png')
+        this.load.image('stone-furnace', '../assets/stone-furnace.png')
     }
 
     create(){
-        key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
+        //key1 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE)
 
         let width = this.sys.game.config.width
         let height = this.sys.game.config.height
+
+        this.add.sprite(200, 200, 'grass1')
         
 
         for(let x = 0; x < width + 10; x += 30){
@@ -75,22 +76,63 @@ class GameScene extends Phaser.Scene{
         }
 
         for(let x = 630; x < 1100; x += 30){
-            for(let y = 20; y < 200; y += 30){
-                this.add.sprite(x, y, 'iron-ore')
+            for(let y = 0; y < 200; y += 30){
+                this.add.sprite(x, y, 'iron-ore').setOrigin(0, 0)
             }
         }
 
-        for(let x = 1230; x < 1700; x += 30){
-            for(let y = 20; y < 200; y += 30){
-                this.add.sprite(x, y, 'copper-ore')
+        for(let x = 1230; x < width + 10; x += 30){
+            for(let y = 0; y < 200; y += 30){
+                this.add.sprite(x, y, 'copper-ore').setOrigin(0, 0)
             }
         }
+
+        // this.load.image('pipe-corner-down-left', '../assets/pipe-corner-down-left.png')
+        // this.load.image('pipe-corner-down-right', '../assets/pipe-corner-down-right.png')
+        // this.load.image('pipe-corner-up-left', '../assets/pipe-corner-up-left.png')
+        // this.load.image('pipe-corner-up-right', '../assets/pipe-corner-up-right.png')
+        // this.load.image('pipe-corner-straight-horizontal', '../assets/pipe-corner-straight-horizontal.png')
+        // this.load.image('pipe-corner-straight-vertical', '../assets/pipe-corner-straight-vertical.png')
+
+        this.add.sprite(60, 90, 'pipe-straight-vertical').setOrigin(0, 0)
+        this.add.sprite(60, 120, 'pipe-straight-vertical').setOrigin(0, 0)
+        this.add.sprite(60, 150, 'pipe-straight-vertical').setOrigin(0, 0)
+        this.add.sprite(60, 180, 'pipe-straight-vertical').setOrigin(0, 0)
+        this.add.sprite(60, 210, 'pipe-corner-up-right').setOrigin(0, 0)
+        this.add.sprite(90, 210, 'pipe-straight-horizontal').setOrigin(0, 0)
+        this.add.sprite(120, 210, 'pipe-straight-horizontal').setOrigin(0, 0)
+        this.add.sprite(150, 210, 'pipe-straight-horizontal').setOrigin(0, 0)
+        this.add.sprite(180, 210, 'pipe-straight-horizontal').setOrigin(0, 0)
+        
+        this.add.sprite(30, 30, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(90, 30, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(150, 30, 'burner-drill').setOrigin(0, 0)
+
+        this.add.sprite(270, 90, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(330, 90, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(390, 90, 'burner-drill').setOrigin(0, 0)
+
+        this.add.sprite(810, 90, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(870, 90, 'burner-drill').setOrigin(0, 0)
+        
+        this.add.sprite(1230, 90, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(1290, 90, 'burner-drill').setOrigin(0, 0)
+        this.add.sprite(1350, 90, 'burner-drill').setOrigin(0, 0)
+        
+        this.add.sprite(200, 200, 'stone-furnace').setOrigin(0, 0)
+        this.add.sprite(260, 200, 'stone-furnace').setOrigin(0, 0)
+
+        this.add.sprite(700, 200, 'stone-furnace').setOrigin(0, 0)
+        this.add.sprite(940, 200, 'stone-furnace').setOrigin(0, 0)
+
+        this.add.sprite(1400, 200, 'stone-furnace').setOrigin(0, 0)
+
     }
 
-    update(time, delta){
-        if(key1.isDown){
-            console.log('1')
-        }
+    update(){
+        // if(key1.isDown){
+        //     console.log('1')
+        // }
     }
 }
 

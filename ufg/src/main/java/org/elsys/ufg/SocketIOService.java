@@ -2,12 +2,12 @@ package org.elsys.ufg;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
-import netscape.javascript.JSObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.net.Socket;
 import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -31,17 +31,19 @@ public class SocketIOService {
     }
 
     public void start(){
-        socketIOServer.addConnectListener(client -> {
-            client.sendEvent("connected", "You're connected successfully...");
+        socketIOServer.addConnectListener((client) -> {
+            client.sendEvent("message", "You're connected successfully...");
             String userId = client.getSessionId().toString();
+            System.out.println("connect " + userId);
             if (userId != null) {
                 clients.put(userId, client);
             }
         });
 
-        socketIOServer.addDisconnectListener(client -> {
+        socketIOServer.addDisconnectListener((client) -> {
             String clientIp = client.getRemoteAddress().toString();
             String userId = client.getSessionId().toString();
+            System.out.println("disconnect " + userId);
             if (userId != null) {
                 clients.remove(userId);
                 client.disconnect();
@@ -54,17 +56,17 @@ public class SocketIOService {
 
         socketIOServer.start();
 
-        new Thread(() -> {
-            while (true) {
-                try {
-                    // Send broadcast message every 3 seconds
-                    Thread.sleep(3000);
-                    socketIOServer.getBroadcastOperations().sendEvent("myBroadcast", "Broadcast message " + Instant.now().toString());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        new Thread(() -> {
+//            while (true) {
+//                try {
+//                    // Send broadcast message every 3 seconds
+//                    Thread.sleep(3000);
+//                    // socketIOServer.getBroadcastOperations().sendEvent("myBroadcast", "Broadcast message " + Instant.now().toString());
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
     }
 
     public void stop(){

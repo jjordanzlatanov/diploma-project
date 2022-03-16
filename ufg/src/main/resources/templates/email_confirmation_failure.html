@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <title>Email Sent</title>
   <!-- Used in production -->
-  <link rel="stylesheet" href="/email_confirmation.css"/>
+  <link th:href="@{/email_confirmation.css}" rel="stylesheet"/>
 
   <!-- Used for development through VS Code Live Server extension -->
-  <link rel="stylesheet" href="../static/email_confirmation.css"/>
+  <link href="../static/email_confirmation.css" rel="stylesheet"/>
 </head>
 
 <body>

@@ -1,6 +1,9 @@
 package org.elsys.ufg;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -15,6 +18,8 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.text.TabableView;
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -38,15 +43,6 @@ public class MainController{
 
     @Autowired
     private GameStorageRepository gameStorageRepository;
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String getTest(){
-        gameStorageRepository.save(new Grass(0, 0, 30, 30, "grass1"), "chunks");
-        
-        System.out.println(gameStorageRepository.findAll(Grass.class, "chunks"));
-
-        return "home";
-    }
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHome(HttpServletRequest request){

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <title>Home</title>
   <!-- Used in production -->
-  <link rel="stylesheet" href="/home.css"/>
+  <link th:href="@{/home.css}" rel="stylesheet"/>
 
   <!-- Used for development through VS Code Live Server extension -->
-  <link rel="stylesheet" href="../static/home.css"/>
+  <link href="../static/home.css" rel="stylesheet"/>
 </head>
 
 <body>
