@@ -10,30 +10,24 @@ import javax.annotation.PreDestroy;
 import java.net.Socket;
 import java.time.Instant;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class SocketIOService {
-    private static Map<String, SocketIOClient> clients = new ConcurrentHashMap<>();
-    private static final String PUSH_DATA_EVENT = "push_data_event";
+    private Map<String, SocketIOClient> clients = new ConcurrentHashMap<>();
+    private String PUSH_DATA_EVENT = "push_data_event";
+    private SocketIOClient userClient;
 
     @Autowired
     private SocketIOServer socketIOServer;
 
     @PostConstruct
-    private void Startup(){
-        start();
-    }
-
-    @PreDestroy
-    private void Stop(){
-        stop();
-    }
-
     public void start(){
         socketIOServer.addConnectListener((client) -> {
-            client.sendEvent("message", "You're connected successfully...");
             String userId = client.getSessionId().toString();
+            client.sendEvent("textMessage", "You're connected successfully... " + userId);
+            userClient = client;
             System.out.println("connect " + userId);
             if (userId != null) {
                 clients.put(userId, client);
@@ -41,6 +35,10 @@ public class SocketIOService {
         });
 
         socketIOServer.addDisconnectListener((client) -> {
+            if(userClient.equals(client)){
+                userClient = clients.values().iterator().next();
+            }
+
             String clientIp = client.getRemoteAddress().toString();
             String userId = client.getSessionId().toString();
             System.out.println("disconnect " + userId);
@@ -50,25 +48,29 @@ public class SocketIOService {
             }
         });
 
-        socketIOServer.addEventListener("messageToServer", ChatObject.class, (client, data, ackRequest) -> {
+        socketIOServer.addEventListener("ObjectMessage", ChatObject.class, (client, data, ackRequest) -> {
             System.out.println("Message from " + data.getUserName() + ": " + data.getMessage());
         });
 
+
         socketIOServer.start();
 
-//        new Thread(() -> {
-//            while (true) {
-//                try {
-//                    // Send broadcast message every 3 seconds
-//                    Thread.sleep(3000);
-//                    // socketIOServer.getBroadcastOperations().sendEvent("myBroadcast", "Broadcast message " + Instant.now().toString());
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        new Thread(() -> {
+            while (true) {
+                try {
+                    // Send broadcast message every 3 seconds
+                    Thread.sleep(3000);
+                    if(userClient != null){
+                        userClient.sendEvent("textMessage", "Time " + Instant.now().toString());
+                    }
+                } catch (InterruptedException e) {
+                        e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
+    @PreDestroy
     public void stop(){
         if(socketIOServer != null){
             socketIOServer.stop();
