@@ -1,13 +1,6 @@
 package org.elsys.ufg;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.relational.core.sql.Select;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -18,9 +11,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.TabableView;
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -41,9 +31,6 @@ public class MainController{
 
     @Autowired
     private CookieService cookieService;
-
-    @Autowired
-    private GameStorageRepository gameStorageRepository;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String getHome(HttpServletRequest request, Model model){

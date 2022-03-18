@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.net.Socket;
-import java.time.Instant;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -29,7 +26,7 @@ public class SocketIOService {
     public void start(){
         socketIOServer.addConnectListener((client) -> {
             String userId = client.getSessionId().toString();
-                clients.put(userId, client);
+            clients.put(userId, client);
         });
 
         socketIOServer.addDisconnectListener((client) -> {
@@ -39,9 +36,9 @@ public class SocketIOService {
                 client.disconnect();
         });
 
-        socketIOServer.addEventListener("clientUsername", String.class, (client, username, ackRequest) -> {
+        socketIOServer.addEventListener("username", String.class, (client, username, ackRequest) -> {
             clientUsernames.put(client.getSessionId().toString(), username);
-            gameStorageRepository.save(new Grass(200, 200, 230, 230, "grass1"), clientUsernames.get(client.getSessionId().toString()));
+            clients.get(client.getSessionId().toString()).sendEvent("map", gameStorageRepository.findMap(clientUsernames.get(client.getSessionId().toString())));
         });
 
         socketIOServer.start();
