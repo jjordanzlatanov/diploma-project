@@ -17,6 +17,9 @@
 <body>
   <!-- Used in production -->
   <script th:src="@{/phaser.js}" type="text/javascript"></script>
+  <script>
+    let username = "[[${username}]]"
+  </script>
   <script th:src="@{/game.js}" type="text/javascript"></script>
 
   <!-- Used for development through VS Code Live Server extension -->

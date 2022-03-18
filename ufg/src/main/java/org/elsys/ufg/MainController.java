@@ -11,6 +11,7 @@ import org.springframework.data.relational.core.sql.Select;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
@@ -45,11 +46,12 @@ public class MainController{
     private GameStorageRepository gameStorageRepository;
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String getHome(HttpServletRequest request){
+    public String getHome(HttpServletRequest request, Model model){
         if(!cookieService.isLogged(request)){
             return "home";
         }
 
+        model.addAttribute("username", cookieService.getCookie("username", request).getValue());
         return "game";
     }
 

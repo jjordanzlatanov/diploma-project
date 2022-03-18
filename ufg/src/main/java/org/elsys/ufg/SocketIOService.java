@@ -16,42 +16,33 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class SocketIOService {
     private Map<String, SocketIOClient> clients = new ConcurrentHashMap<>();
+    private Map<String, String> clientUsernames = new ConcurrentHashMap<>();
     private String PUSH_DATA_EVENT = "push_data_event";
-    private SocketIOClient userClient;
 
     @Autowired
     private SocketIOServer socketIOServer;
+
+    @Autowired
+    GameStorageRepository gameStorageRepository;
 
     @PostConstruct
     public void start(){
         socketIOServer.addConnectListener((client) -> {
             String userId = client.getSessionId().toString();
-            client.sendEvent("textMessage", "You're connected successfully... " + userId);
-            userClient = client;
-            System.out.println("connect " + userId);
-            if (userId != null) {
                 clients.put(userId, client);
-            }
         });
 
         socketIOServer.addDisconnectListener((client) -> {
-            if(userClient.equals(client)){
-                userClient = clients.values().iterator().next();
-            }
-
-            String clientIp = client.getRemoteAddress().toString();
             String userId = client.getSessionId().toString();
-            System.out.println("disconnect " + userId);
-            if (userId != null) {
                 clients.remove(userId);
+                clientUsernames.remove(client.getSessionId().toString());
                 client.disconnect();
-            }
         });
 
-        socketIOServer.addEventListener("ObjectMessage", ChatObject.class, (client, data, ackRequest) -> {
-            System.out.println("Message from " + data.getUserName() + ": " + data.getMessage());
+        socketIOServer.addEventListener("clientUsername", String.class, (client, username, ackRequest) -> {
+            clientUsernames.put(client.getSessionId().toString(), username);
+            gameStorageRepository.save(new Grass(200, 200, 230, 230, "grass1"), clientUsernames.get(client.getSessionId().toString()));
         });
-
 
         socketIOServer.start();
 
@@ -60,11 +51,8 @@ public class SocketIOService {
                 try {
                     // Send broadcast message every 3 seconds
                     Thread.sleep(3000);
-                    if(userClient != null){
-                        userClient.sendEvent("textMessage", "Time " + Instant.now().toString());
-                    }
                 } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         }).start();
