@@ -57,15 +57,6 @@ public abstract class MapObject {
         this.endY = endY;
     }
 
-
-    public String getObjectType() {
-        return objectType;
-    }
-
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
-    }
-
     public String getTexture() {
         return texture;
     }
@@ -80,5 +71,13 @@ public abstract class MapObject {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
+    }
+
+    public String getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(String objectType) {
+        this.objectType = objectType;
     }
 }

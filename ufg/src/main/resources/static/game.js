@@ -53,6 +53,7 @@ socket.on('connect', () => {
 })
 
 socket.on('map', (map) => {
+    console.log(map)
     initialMap = map
     game = new Phaser.Game(config)
 })

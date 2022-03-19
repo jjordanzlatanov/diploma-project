@@ -12,4 +12,20 @@ public abstract class RawMaterial extends MapObject {
         this.material = material;
         this.gain = gain;
     }
+
+    public String getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(String material) {
+        this.material = material;
+    }
+
+    public Integer getGain() {
+        return gain;
+    }
+
+    public void setGain(Integer gain) {
+        this.gain = gain;
+    }
 }
