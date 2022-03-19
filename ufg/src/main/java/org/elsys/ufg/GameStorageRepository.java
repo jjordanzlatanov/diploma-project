@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 @Repository
@@ -20,7 +19,7 @@ public class GameStorageRepository {
     }
 
     public List<Object> findMap(String username){
-        if(mongoTemplate.find(new Query().addCriteria(Criteria.where("objectType").is("mapObject")), Object.class, username).size() == 0){
+        if(mongoTemplate.getCollection(username).countDocuments() == 0){
             mongoTemplate.insert(mongoTemplate.findAll(Object.class, "initialMap"), username);
         }
 
