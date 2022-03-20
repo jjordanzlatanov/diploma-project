@@ -24,7 +24,7 @@ public class InitialMap {
 
         for(int x = 0; x <= 420; x += 30){
             for(int y = 0; y <= 120; y += 30){
-                gameStorageRepository.save(new Coal(x, y, x + 30, x + 30), "initialMap");
+                gameStorageRepository.save(new CoalOre(x, y, x + 30, x + 30), "initialMap");
             }
         }
 

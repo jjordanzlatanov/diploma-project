@@ -70,6 +70,6 @@ socket.on('map', (map) => {
     game = new Phaser.Game(config)
 })
 
-window.addEventListener('resize', () => {
-    window.location.reload()
-})
+// window.addEventListener('resize', () => {
+//     window.location.reload()
+// })
