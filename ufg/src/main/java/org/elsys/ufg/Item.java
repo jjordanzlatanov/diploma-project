@@ -17,7 +17,7 @@ public abstract class Item {
     public Item(String texture) {
         this.texture = texture;
         this.types = new ArrayList<>();
-        this.types.add("item");
+        addType("item");
     }
 
     public String getTexture() {
