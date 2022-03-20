@@ -43,6 +43,4 @@ public abstract class Item {
     public String getType(){
         return this.types.get(this.types.size() - 1);
     }
-
-
 }

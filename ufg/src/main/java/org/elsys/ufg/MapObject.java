@@ -88,4 +88,8 @@ public abstract class MapObject {
     public void addType(String type){
         this.types.add(type);
     }
+
+    public String getType(){
+        return this.types.get(this.types.size() - 1);
+    }
 }
