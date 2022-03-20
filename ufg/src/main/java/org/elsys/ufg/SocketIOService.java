@@ -38,21 +38,27 @@ public class SocketIOService {
 
         socketIOServer.addEventListener("username", String.class, (client, username, ackRequest) -> {
             clientUsernames.put(client.getSessionId().toString(), username);
-            clients.get(client.getSessionId().toString()).sendEvent("map", gameStorageRepository.findMap(clientUsernames.get(client.getSessionId().toString())));
+            client.sendEvent("map", gameStorageRepository.findMap(username));
+        });
+
+        socketIOServer.addEventListener("clickLeft", Mouse.class, (client, mouse, ackRequest) -> {
+            if(gameStorageRepository.buildObject(new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60), clientUsernames.get(client.getSessionId().toString()))){
+                client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
+            }
         });
 
         socketIOServer.start();
 
-        new Thread(() -> {
-            while (true) {
-                try {
-                    // Send broadcast message every 3 seconds
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        new Thread(() -> {
+//            while (true) {
+//                try {
+//                    // Send broadcast message every 3 seconds
+//                    Thread.sleep(3000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
     }
 
     @PreDestroy

@@ -1,6 +1,8 @@
 /** @type {import('./phaser')} */
 
 let initialMap = null
+let socket = null
+let game = null
 
 class GameScene extends Phaser.Scene{
     constructor(){
@@ -30,9 +32,22 @@ class GameScene extends Phaser.Scene{
         initialMap.forEach(mapObject => {
             this.add.sprite(mapObject.startX, mapObject.startY, mapObject.texture).setOrigin(0)
         })
+
+        this.input.mouse.disableContextMenu()
+
+        this.input.on('pointerup', (pointer) => {
+            if(pointer.leftButtonReleased()){
+                socket.emit('clickLeft', {x: this.input.activePointer.worldX, y: this.input.activePointer.worldY})
+            }
+        })
+
+        socket.on('build', (mapObject) => {
+            this.add.sprite(mapObject.startX, mapObject.startY, mapObject.texture).setOrigin(0)
+        })
     }
 
     update(){
+
     }
 }
 
@@ -44,16 +59,13 @@ let config = {
     scene: [GameScene]
 }
 
-let socket = io('http://localhost:3000')
-
-let game = null
+socket = io('http://localhost:3000')
 
 socket.on('connect', () => {
     socket.emit('username', username)
 })
 
 socket.on('map', (map) => {
-    console.log(map)
     initialMap = map
     game = new Phaser.Game(config)
 })
