@@ -3,6 +3,9 @@ package org.elsys.ufg;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Document
 public abstract class MapObject {
     @Id
@@ -13,7 +16,7 @@ public abstract class MapObject {
     private Integer endY;
     private String texture;
     private Integer priority;
-    private String objectType;
+    private List<String> types;
 
     public MapObject(Integer startX, Integer startY, Integer endX, Integer endY, String texture, Integer priority) {
         this.startX = startX;
@@ -22,7 +25,8 @@ public abstract class MapObject {
         this.endY = endY;
         this.texture = texture;
         this.priority = priority;
-        this.objectType = "mapObject";
+        this.types = new ArrayList<>();
+        addType("mapObject");
     }
 
     public Integer getStartX() {
@@ -73,11 +77,15 @@ public abstract class MapObject {
         this.priority = priority;
     }
 
-    public String getObjectType() {
-        return objectType;
+    public List<String> getTypes() {
+        return types;
     }
 
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
+    public void setTypes(List<String> types) {
+        this.types = types;
+    }
+
+    public void addType(String type){
+        this.types.add(type);
     }
 }

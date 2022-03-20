@@ -12,7 +12,7 @@ public class InitialMap {
 
     @PostConstruct
     public void load(){
-        // loadMap();
+        loadMap();
     }
 
     public void loadMap(){

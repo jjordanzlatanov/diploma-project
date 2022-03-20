@@ -11,6 +11,7 @@ public abstract class RawMaterial extends MapObject {
         super(startX, startY, endX, endY, texture, priority);
         this.material = material;
         this.gain = gain;
+        this.addType("rawMaterial");
     }
 
     public String getMaterial() {

@@ -24,11 +24,11 @@ public class GameStorageRepository {
             mongoTemplate.insert(mongoTemplate.findAll(Object.class, "initialMap"), username);
         }
 
-        return mongoTemplate.find(new Query().addCriteria(Criteria.where("objectType").is("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), MapObject.class, username);
+        return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), MapObject.class, username);
     }
 
     public boolean buildObject(MapObject mapObject, String username) {
-        MapObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("objectType").is("mapObject").and("startX").lt(mapObject.getEndX()).and("startY").lt(mapObject.getEndY()).and("endX").gt(mapObject.getStartX()).and("endY").gt(mapObject.getStartY()).and("priority").gte(mapObject.getPriority())), MapObject.class, username);
+        MapObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(mapObject.getEndX()).and("startY").lt(mapObject.getEndY()).and("endX").gt(mapObject.getStartX()).and("endY").gt(mapObject.getStartY()).and("priority").gte(mapObject.getPriority())), MapObject.class, username);
 
         if(intersectingObject != null) {
             return false;
