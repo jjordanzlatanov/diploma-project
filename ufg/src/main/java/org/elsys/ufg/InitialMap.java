@@ -12,7 +12,7 @@ public class InitialMap {
 
     @PostConstruct
     public void load(){
-        loadMap();
+        // loadMap();
     }
 
     public void loadMap(){
@@ -24,19 +24,19 @@ public class InitialMap {
 
         for(int x = 0; x <= 420; x += 30){
             for(int y = 0; y <= 120; y += 30){
-                gameStorageRepository.save(new CoalOre(x, y, x + 30, x + 30), "initialMap");
+                gameStorageRepository.save(new CoalOre(x, y, x + 30, y + 30), "initialMap");
             }
         }
 
         for(int x = 600; x <= 1110; x += 30){
             for(int y = 0; y <= 120; y += 30){
-                gameStorageRepository.save(new IronOre(x, y, x + 30, x + 30), "initialMap");
+                gameStorageRepository.save(new IronOre(x, y, x + 30, y + 30), "initialMap");
             }
         }
 
         for(int x = 1230; x <= 2010; x += 30){
             for(int y = 0; y <= 120; y += 30){
-                gameStorageRepository.save(new CopperOre(x, y, x + 30, x + 30), "initialMap");
+                gameStorageRepository.save(new CopperOre(x, y, x + 30, y + 30), "initialMap");
             }
         }
     }

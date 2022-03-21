@@ -34,8 +34,24 @@ public class GameStorageRepository {
             return false;
         }
 
+        if(mapObject.getTypes().contains("extractionMachine")){
+            ExtractionMachine extractionMachine = ((ExtractionMachine) mapObject);
+            List<RawMaterial> resources = findResources(extractionMachine, username);
+
+            if(resources.size() != 0){
+                extractionMachine.setMaterial(resources.get(0));
+                extractionMachine.setAmountTiles(resources.size());
+            }
+
+            System.out.println(extractionMachine.getMaterial());
+        }
+
         save(mapObject, username);
         return true;
+    }
+
+    public List<RawMaterial> findResources(ExtractionMachine extractionMachine, String username){
+        return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("rawMaterial").and("startX").gte(extractionMachine.getStartX()).lt(extractionMachine.getEndX()).and("startY").gte(extractionMachine.getStartY()).lt(extractionMachine.getEndY()).and("endX").gt(extractionMachine.getStartX()).lte(extractionMachine.getEndX()).and("endY").gt(extractionMachine.getStartY()).lte(extractionMachine.getEndY())), RawMaterial.class, username);
     }
 }
 

@@ -42,9 +42,12 @@ public class SocketIOService {
         });
 
         socketIOServer.addEventListener("clickLeft", Mouse.class, (client, mouse, ackRequest) -> {
-            if(gameStorageRepository.buildObject(new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60), clientUsernames.get(client.getSessionId().toString()))){
+            BurnerDrill burnerDrill = new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60);
+            if(gameStorageRepository.buildObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()))){
                 client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
             }
+            burnerDrill.extract();
+            System.out.println(burnerDrill.getInventory());
         });
 
         socketIOServer.start();

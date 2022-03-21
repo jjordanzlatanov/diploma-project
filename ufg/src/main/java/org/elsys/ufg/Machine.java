@@ -14,21 +14,19 @@ public abstract class Machine extends MapObject {
         this.addType("machine");
     }
 
-    public void addToInventory(Item item){
-        inventory.add(item);
+    public List<Item> getInventory() {
+        return inventory;
     }
 
-    public Item getFromInventory(String itemType){
-        Item foundItem = null;
+    public void setInventory(List<Item> inventory) {
+        this.inventory = inventory;
+    }
 
-        for(Item item : inventory){
-            if(item.getType().equals(itemType)){
-                foundItem = item;
-                inventory.remove(item);
-                break;
-            }
-        }
+    public void addToInventory(Item item) {
+        this.inventory.add(item);
+    }
 
-        return foundItem;
+    public void addManyToInvetory(List<Item> items) {
+        this.inventory.addAll(items);
     }
 }
