@@ -37,4 +37,9 @@ public abstract class ExtractionMachine extends Machine {
             }
         }
     }
+
+    @Override
+    public void tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        extract();
+    }
 }

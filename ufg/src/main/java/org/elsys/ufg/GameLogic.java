@@ -1,5 +1,8 @@
 package org.elsys.ufg;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +10,6 @@ public class GameLogic implements Runnable {
     private boolean running;
     private Thread thread;
     private List<MapObject> mapObjects;
-
-
     GameLogic(){
         this.running = true;
         this.thread = new Thread(this);
@@ -19,10 +20,19 @@ public class GameLogic implements Runnable {
     @Override
     public void run() {
         while(running){
-            System.out.println("Thread " + Thread.currentThread().getId());
-            System.out.println(mapObjects.size());
+            for(MapObject mapObject : mapObjects){
+                try {
+                    mapObject.tick();
+                    if(mapObject instanceof ExtractionMachine){
+                        System.out.println(((ExtractionMachine) mapObject).getInventory());
+                    }
+                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

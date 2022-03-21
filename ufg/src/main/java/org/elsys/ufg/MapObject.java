@@ -3,6 +3,7 @@ package org.elsys.ufg;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,4 +93,6 @@ public abstract class MapObject {
     public String getType(){
         return this.types.get(this.types.size() - 1);
     }
+
+    public void tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {}
 }
