@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,23 +23,29 @@ public class SocketIOService {
     @Autowired
     GameStorageRepository gameStorageRepository;
 
+    @Autowired
+    GameService gameService;
+
     @PostConstruct
     public void start(){
         socketIOServer.addConnectListener((client) -> {
-            String userId = client.getSessionId().toString();
-            clients.put(userId, client);
+            clients.put(client.getSessionId().toString(), client);
         });
 
         socketIOServer.addDisconnectListener((client) -> {
             String userId = client.getSessionId().toString();
-                clients.remove(userId);
-                clientUsernames.remove(client.getSessionId().toString());
-                client.disconnect();
+            clients.remove(userId);
+            gameService.stopGame(clientUsernames.get(userId));
+            clientUsernames.remove(userId);
+            client.disconnect();
         });
 
         socketIOServer.addEventListener("username", String.class, (client, username, ackRequest) -> {
+            List<MapObject> mapObjects = gameStorageRepository.findMap(username);
             clientUsernames.put(client.getSessionId().toString(), username);
-            client.sendEvent("map", gameStorageRepository.findMap(username));
+            gameService.addGame(username);
+            gameService.loadMap(mapObjects, username);
+            client.sendEvent("map", mapObjects);
         });
 
         socketIOServer.addEventListener("clickLeft", Mouse.class, (client, mouse, ackRequest) -> {
@@ -46,8 +53,7 @@ public class SocketIOService {
             if(gameStorageRepository.buildObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()))){
                 client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
             }
-            burnerDrill.extract();
-            System.out.println(burnerDrill.getInventory());
+            gameService.addMapObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()));
         });
 
         socketIOServer.start();

@@ -42,8 +42,6 @@ public class GameStorageRepository {
                 extractionMachine.setMaterial(resources.get(0));
                 extractionMachine.setAmountTiles(resources.size());
             }
-
-            System.out.println(extractionMachine.getMaterial());
         }
 
         save(mapObject, username);
