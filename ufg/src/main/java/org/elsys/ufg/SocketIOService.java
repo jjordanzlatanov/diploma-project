@@ -54,6 +54,7 @@ public class SocketIOService {
                 client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
             }
             gameService.addMapObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()));
+            // gameStorageRepository.updateObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()), 33);
         });
 
         socketIOServer.start();

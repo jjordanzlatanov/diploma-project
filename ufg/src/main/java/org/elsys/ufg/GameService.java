@@ -15,7 +15,7 @@ public class GameService {
     }
 
     public void addGame(String username){
-        game.put(username, new GameLogic());
+        game.put(username, new GameLogic(username));
     }
 
     public void stopGame(String username){

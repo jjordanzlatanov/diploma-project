@@ -10,11 +10,14 @@ public class GameLogic implements Runnable {
     private boolean running;
     private Thread thread;
     private List<MapObject> mapObjects;
-    GameLogic(){
+    private String username;
+
+    GameLogic(String username){
         this.running = true;
         this.thread = new Thread(this);
         this.mapObjects = new ArrayList<>();
         this.thread.start();
+        this.username = username;
     }
 
     @Override
@@ -24,7 +27,8 @@ public class GameLogic implements Runnable {
                 try {
                     mapObject.tick();
                     if(mapObject instanceof ExtractionMachine){
-                        System.out.println(((ExtractionMachine) mapObject).getInventory());
+                        System.out.println(username);
+                        // updateObject(mapObject, username, 10);
                     }
                 } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
@@ -49,5 +53,9 @@ public class GameLogic implements Runnable {
 
     public void addMapObject(MapObject mapObject){
         this.mapObjects.add(mapObject);
+    }
+
+    public List<MapObject> getMap(){
+        return mapObjects;
     }
 }
