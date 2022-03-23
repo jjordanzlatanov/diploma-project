@@ -21,10 +21,10 @@ public class SocketIOService {
     private SocketIOServer socketIOServer;
 
     @Autowired
-    GameStorageRepository gameStorageRepository;
+    private GameStorageRepository gameStorageRepository;
 
     @Autowired
-    GameService gameService;
+    private GameService gameService;
 
     @PostConstruct
     public void start(){
@@ -54,21 +54,29 @@ public class SocketIOService {
                 client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
             }
             gameService.addMapObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()));
-            // gameStorageRepository.updateObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()), 33);
         });
 
         socketIOServer.start();
 
-//        new Thread(() -> {
-//            while (true) {
-//                try {
-//                    // Send broadcast message every 3 seconds
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        new Thread(() -> {
+            while (true) {
+                try {
+                    Thread.sleep(3200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                for(String username : clientUsernames.values()){
+                    List<MapObject> mapObjects = gameService.getMapObjects(username);
+
+                    for(MapObject mapObject : mapObjects){
+                        if(mapObject instanceof Machine){
+                            gameStorageRepository.updateObject(mapObject, username);
+                        }
+                    }
+                }
+            }
+        }).start();
     }
 
     @PreDestroy

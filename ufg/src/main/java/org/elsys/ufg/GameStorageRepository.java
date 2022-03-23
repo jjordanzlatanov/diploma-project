@@ -53,8 +53,8 @@ public class GameStorageRepository {
         return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("rawMaterial").and("startX").gte(extractionMachine.getStartX()).lt(extractionMachine.getEndX()).and("startY").gte(extractionMachine.getStartY()).lt(extractionMachine.getEndY()).and("endX").gt(extractionMachine.getStartX()).lte(extractionMachine.getEndX()).and("endY").gt(extractionMachine.getStartY()).lte(extractionMachine.getEndY())), RawMaterial.class, username);
     }
 
-    public void updateObject(MapObject mapObject, String username, Integer number){
-        mongoTemplate.updateFirst(new Query().addCriteria(Criteria.where("startX").is(mapObject.getStartX()).and("startY").is(mapObject.getStartY()).and("endX").is(mapObject.getEndX()).and("endY").is(mapObject.getEndY()).and("priority").is(mapObject.getPriority())), new Update().set("priority", number), username);
+    public void updateObject(MapObject mapObject, String username){
+        mongoTemplate.save(mapObject, username);
     }
 }
 

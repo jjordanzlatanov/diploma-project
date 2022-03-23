@@ -30,4 +30,8 @@ public class GameService {
     public void addMapObject(MapObject mapObject, String username){
         this.game.get(username).addMapObject(mapObject);
     }
+
+    public List<MapObject> getMapObjects(String username){
+        return this.game.get(username).getMapObjects();
+    }
 }

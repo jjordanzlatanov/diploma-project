@@ -26,10 +26,6 @@ public class GameLogic implements Runnable {
             for(MapObject mapObject : mapObjects){
                 try {
                     mapObject.tick();
-                    if(mapObject instanceof ExtractionMachine){
-                        System.out.println(username);
-                        // updateObject(mapObject, username, 10);
-                    }
                 } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -55,7 +51,7 @@ public class GameLogic implements Runnable {
         this.mapObjects.add(mapObject);
     }
 
-    public List<MapObject> getMap(){
-        return mapObjects;
+    public List<MapObject> getMapObjects(){
+        return this.mapObjects;
     }
 }
