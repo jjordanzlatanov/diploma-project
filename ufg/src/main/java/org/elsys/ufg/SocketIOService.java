@@ -75,7 +75,7 @@ public class SocketIOService {
 
                 for(String username : clientUsernames.values()){
                     List<GameObject> gameObjects = gameService.getGameObjects(username);
-                    
+
                     for(GameObject gameObject : gameObjects){
                         gameStorageRepository.updateObject(gameObject, username);
                     }

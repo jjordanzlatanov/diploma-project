@@ -33,7 +33,7 @@ public abstract class ExtractionMachine extends Machine {
     public void extract() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if(material != null){
             for(int i = 0; i < amountTiles; i++){
-                this.addManyToInvetory(material.getYield());
+                this.addManyToInventory(material.getYield());
             }
         }
     }

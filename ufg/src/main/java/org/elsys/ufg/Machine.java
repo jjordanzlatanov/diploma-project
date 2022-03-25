@@ -27,7 +27,7 @@ public abstract class Machine extends MapObject {
         this.inventory.add(item);
     }
 
-    public void addManyToInvetory(List<Item> items) {
+    public void addManyToInventory(List<Item> items) {
         this.inventory.addAll(items);
     }
 }
