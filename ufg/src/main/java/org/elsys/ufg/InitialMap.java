@@ -1,6 +1,7 @@
 package org.elsys.ufg;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -10,9 +11,14 @@ public class InitialMap {
     @Autowired
     private GameStorageRepository gameStorageRepository;
 
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
     @PostConstruct
     public void load(){
-        loadMap();
+        if(mongoTemplate.getCollection("initialMap").countDocuments() == 0){
+            loadMap();
+        }
     }
 
     public void loadMap(){

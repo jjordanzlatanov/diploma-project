@@ -2,7 +2,7 @@ package org.elsys.ufg;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-// MAKE SMELTING MACHINE ABSTRACT CLASS!!!
+// MAKE PROCESSING MACHINE ABSTRACT CLASS AND SMELTING MACHINE!!!
 
 @Document
 public class StoneFurnace extends Machine {
