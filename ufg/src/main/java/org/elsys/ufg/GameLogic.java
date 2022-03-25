@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameLogic implements Runnable {
-    private List<GameObject> gameObjects;
     private String username;
+    private List<GameObject> gameObjects;
     private boolean running;
     private Thread thread;
 
     GameLogic(String username){
-        this.gameObjects = new ArrayList<>();
         this.username = username;
-        this.running = true;
-        this.thread = new Thread(this);
-        this.thread.start();
+        gameObjects = new ArrayList<>();
+        running = true;
+        thread = new Thread(this);
+        thread.start();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class GameLogic implements Runnable {
     }
 
     public void stop(){
-        this.running = false;
+        running = false;
     }
 
     public void loadGame(List<GameObject> gameObjects){
@@ -48,10 +48,10 @@ public class GameLogic implements Runnable {
     }
 
     public void addGameObject(GameObject gameObject){
-        this.gameObjects.add(gameObject);
+        gameObjects.add(gameObject);
     }
 
     public List<GameObject> getGameObjects(){
-        return this.gameObjects;
+        return gameObjects;
     }
 }

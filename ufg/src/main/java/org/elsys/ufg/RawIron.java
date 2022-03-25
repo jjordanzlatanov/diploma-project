@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RawIron extends Item {
     public RawIron() {
         super("iron-ore");
-        this.addType("rawIron");
+        addType("rawIron");
     }
 }

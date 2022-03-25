@@ -11,7 +11,7 @@ public abstract class ExtractionMachine extends Machine {
 
     public ExtractionMachine(Integer startX, Integer startY, Integer endX, Integer endY, String texture, Integer priority) {
         super(startX, startY, endX, endY, texture, priority);
-        this.addType("extractionMachine");
+        addType("extractionMachine");
     }
 
     public RawMaterial getMaterial() {
@@ -33,7 +33,7 @@ public abstract class ExtractionMachine extends Machine {
     public void extract() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if(material != null){
             for(int i = 0; i < amountTiles; i++){
-                this.addManyToInventory(material.getYield());
+                addManyToInventory(material.getYield());
             }
         }
     }

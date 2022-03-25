@@ -16,7 +16,7 @@ public class InitialMap {
 
     @PostConstruct
     public void load(){
-        if(mongoTemplate.getCollection("initialMap").countDocuments() == 0){
+        if(!mongoTemplate.collectionExists("initialMap")){
             loadMap();
         }
     }

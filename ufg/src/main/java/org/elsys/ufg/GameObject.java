@@ -28,11 +28,11 @@ public abstract class GameObject {
     }
 
     public void addType(String type){
-        this.types.add(type);
+        types.add(type);
     }
 
     public String getType(){
-        return this.types.get(this.types.size() - 1);
+        return types.get(types.size() - 1);
     }
 
     public boolean isTicking() {

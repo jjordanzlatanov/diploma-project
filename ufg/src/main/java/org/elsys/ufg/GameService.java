@@ -11,7 +11,7 @@ public class GameService {
     private Map<String, GameLogic> game;
 
     GameService(){
-        this.game = new ConcurrentHashMap<>();
+        game = new ConcurrentHashMap<>();
     }
 
     public void addGame(String username){
@@ -24,14 +24,14 @@ public class GameService {
     }
 
     public void loadGame(List<GameObject> gameObjects, String username){
-        this.game.get(username).loadGame(gameObjects);
+        game.get(username).loadGame(gameObjects);
     }
 
     public void addGameObject(GameObject gameObject, String username){
-        this.game.get(username).addGameObject(gameObject);
+        game.get(username).addGameObject(gameObject);
     }
 
     public List<GameObject> getGameObjects(String username){
-        return this.game.get(username).getGameObjects();
+        return game.get(username).getGameObjects();
     }
 }

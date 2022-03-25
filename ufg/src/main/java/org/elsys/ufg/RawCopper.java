@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class RawCopper extends Item {
     public RawCopper() {
         super("copper-ore");
-        this.addType("rawCopper");
+        addType("rawCopper");
     }
 }

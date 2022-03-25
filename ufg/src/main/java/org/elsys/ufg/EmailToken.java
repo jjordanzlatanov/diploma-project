@@ -17,12 +17,13 @@ public class EmailToken {
 
     public EmailToken(EmailTokenRepository emailTokenRepository, Integer userId){
         token = String.valueOf(UUID.randomUUID());
-        while(emailTokenRepository.existsByToken(token) != null){
+
+        while(emailTokenRepository.existsByToken(this.token) != null){
             token = String.valueOf(UUID.randomUUID());
         }
 
         this.user_id = userId;
-        this.timestamp = Instant.now().toString();
+        timestamp = Instant.now().toString();
     }
 
     public Integer getId() {

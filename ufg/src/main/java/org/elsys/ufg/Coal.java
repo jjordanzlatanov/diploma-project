@@ -6,6 +6,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Coal extends Item {
     public Coal() {
         super("coal");
-        this.addType("coal");
+        addType("coal");
     }
 }

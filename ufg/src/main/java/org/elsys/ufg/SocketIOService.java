@@ -68,7 +68,7 @@ public class SocketIOService {
         new Thread(() -> {
             while (true) {
                 try {
-                    Thread.sleep(3200);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

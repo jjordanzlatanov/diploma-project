@@ -15,8 +15,8 @@ public abstract class RawMaterial extends MapObject {
         super(startX, startY, endX, endY, texture, priority);
         this.item = item;
         this.gain = gain;
-        this.addType("rawMaterial");
-        this.setTicking(false);
+        addType("rawMaterial");
+        setTicking(false);
     }
 
     public Item getItem() {
@@ -39,7 +39,7 @@ public abstract class RawMaterial extends MapObject {
         List<Item> yield = new ArrayList<>();
 
         for(int i = 0; i < gain; i++){
-            yield.add(this.item.getClass().getConstructor().newInstance());
+            yield.add(item.getClass().getConstructor().newInstance());
         }
 
         return yield;

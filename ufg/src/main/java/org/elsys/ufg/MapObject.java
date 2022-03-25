@@ -24,7 +24,7 @@ public abstract class MapObject extends GameObject {
         this.endY = endY;
         this.texture = texture;
         this.priority = priority;
-        this.addType("mapObject");
+        addType("mapObject");
     }
 
     public Integer getStartX() {

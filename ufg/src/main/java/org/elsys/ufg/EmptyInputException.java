@@ -1,7 +1,7 @@
 package org.elsys.ufg;
 
 public class EmptyInputException extends RuntimeException {
-    private final String page;
+    private String page;
 
     public EmptyInputException(String page){
         this.page = page;

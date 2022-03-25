@@ -17,7 +17,7 @@ public class CookieService {
     private Map<String, Cookie> cookies;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public CookieService(){}
 
@@ -89,12 +89,12 @@ public class CookieService {
     }
 
     public void login(User user, HttpServletResponse response){
-        this.create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
-        this.create("password", user.getPassword()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
+        create("username", user.getUsername()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
+        create("password", user.getPassword()).setMaxAge(Integer.MAX_VALUE).setPath("/").build(response);
     }
 
     public void logout(HttpServletRequest request, HttpServletResponse response){
-        this.deleteCookie("username", request, response);
-        this.deleteCookie("password", request, response);
+        deleteCookie("username", request, response);
+        deleteCookie("password", request, response);
     }
 }

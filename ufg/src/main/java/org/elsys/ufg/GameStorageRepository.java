@@ -5,10 +5,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Repository
@@ -21,7 +19,7 @@ public class GameStorageRepository {
     }
 
     public List<MapObject> findMap(String username){
-        if(mongoTemplate.getCollection(username).countDocuments() == 0){
+        if(!mongoTemplate.collectionExists(username)){
             mongoTemplate.insert(mongoTemplate.findAll(Object.class, "initialMap"), username);
         }
 
@@ -49,7 +47,7 @@ public class GameStorageRepository {
             }
         }
 
-        save(mapObject, username);
+        this.save(mapObject, username);
         return true;
     }
 

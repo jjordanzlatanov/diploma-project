@@ -8,14 +8,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SocketIOServerConfiguration {
-    @Value("localhost")
     private String host;
-
-    @Value("3000")
     private Integer port;
 
     @Bean
     public SocketIOServer socketIOServer() {
+        host = "localhost";
+        port = 3000;
+
         com.corundumstudio.socketio.Configuration configuration = new com.corundumstudio.socketio.Configuration();
         configuration.setHostname(host);
         configuration.setPort(port);

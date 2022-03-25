@@ -11,8 +11,8 @@ public abstract class Machine extends MapObject {
 
     public Machine(Integer startX, Integer startY, Integer endX, Integer endY, String texture, Integer priority) {
         super(startX, startY, endX, endY, texture, priority);
-        this.addType("machine");
-        this.setTicking(true);
+        addType("machine");
+        setTicking(true);
     }
 
     public List<Item> getInventory() {
@@ -24,10 +24,10 @@ public abstract class Machine extends MapObject {
     }
 
     public void addToInventory(Item item) {
-        this.inventory.add(item);
+        inventory.add(item);
     }
 
     public void addManyToInventory(List<Item> items) {
-        this.inventory.addAll(items);
+        inventory.addAll(items);
     }
 }
