@@ -7,25 +7,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameLogic implements Runnable {
+    private List<GameObject> gameObjects;
+    private String username;
     private boolean running;
     private Thread thread;
-    private List<MapObject> mapObjects;
-    private String username;
 
     GameLogic(String username){
+        this.gameObjects = new ArrayList<>();
+        this.username = username;
         this.running = true;
         this.thread = new Thread(this);
-        this.mapObjects = new ArrayList<>();
         this.thread.start();
-        this.username = username;
     }
 
     @Override
     public void run() {
         while(running){
-            for(MapObject mapObject : mapObjects){
+            for(GameObject gameObject : gameObjects){
                 try {
-                    mapObject.tick();
+                    gameObject.tick();
                 } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -43,15 +43,15 @@ public class GameLogic implements Runnable {
         this.running = false;
     }
 
-    public void loadMap(List<MapObject> mapObjects){
-        this.mapObjects.addAll(mapObjects);
+    public void loadGame(List<GameObject> gameObjects){
+        this.gameObjects.addAll(gameObjects);
     }
 
-    public void addMapObject(MapObject mapObject){
-        this.mapObjects.add(mapObject);
+    public void addGameObject(GameObject gameObject){
+        this.gameObjects.add(gameObject);
     }
 
-    public List<MapObject> getMapObjects(){
-        return this.mapObjects;
+    public List<GameObject> getGameObjects(){
+        return this.gameObjects;
     }
 }

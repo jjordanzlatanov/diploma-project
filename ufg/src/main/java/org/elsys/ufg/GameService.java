@@ -23,15 +23,15 @@ public class GameService {
         game.remove(username);
     }
 
-    public void loadMap(List<MapObject> mapObjects, String username){
-        this.game.get(username).loadMap(mapObjects);
+    public void loadGame(List<GameObject> gameObjects, String username){
+        this.game.get(username).loadGame(gameObjects);
     }
 
-    public void addMapObject(MapObject mapObject, String username){
-        this.game.get(username).addMapObject(mapObject);
+    public void addGameObject(GameObject gameObject, String username){
+        this.game.get(username).addGameObject(gameObject);
     }
 
-    public List<MapObject> getMapObjects(String username){
-        return this.game.get(username).getMapObjects();
+    public List<GameObject> getGameObjects(String username){
+        return this.game.get(username).getGameObjects();
     }
 }

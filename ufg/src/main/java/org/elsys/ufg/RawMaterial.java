@@ -16,6 +16,7 @@ public abstract class RawMaterial extends MapObject {
         this.item = item;
         this.gain = gain;
         this.addType("rawMaterial");
+        this.setTicking(false);
     }
 
     public Item getItem() {

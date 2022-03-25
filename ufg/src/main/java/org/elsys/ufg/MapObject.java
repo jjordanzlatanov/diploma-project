@@ -8,26 +8,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Document
-public abstract class MapObject {
-    @Id
-    private String id;
+public abstract class MapObject extends GameObject {
     private Integer startX;
     private Integer startY;
     private Integer endX;
     private Integer endY;
     private String texture;
     private Integer priority;
-    private List<String> types;
 
     public MapObject(Integer startX, Integer startY, Integer endX, Integer endY, String texture, Integer priority) {
+        super();
         this.startX = startX;
         this.startY = startY;
         this.endX = endX;
         this.endY = endY;
         this.texture = texture;
         this.priority = priority;
-        this.types = new ArrayList<>();
-        addType("mapObject");
+        this.addType("mapObject");
     }
 
     public Integer getStartX() {
@@ -76,22 +73,6 @@ public abstract class MapObject {
 
     public void setPriority(Integer priority) {
         this.priority = priority;
-    }
-
-    public List<String> getTypes() {
-        return types;
-    }
-
-    public void setTypes(List<String> types) {
-        this.types = types;
-    }
-
-    public void addType(String type){
-        this.types.add(type);
-    }
-
-    public String getType(){
-        return this.types.get(this.types.size() - 1);
     }
 
     public void tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {}

@@ -34,26 +34,33 @@ public class SocketIOService {
 
         socketIOServer.addDisconnectListener((client) -> {
             String userId = client.getSessionId().toString();
-            clients.remove(userId);
             gameService.stopGame(clientUsernames.get(userId));
+
+            clients.remove(userId);
             clientUsernames.remove(userId);
             client.disconnect();
         });
 
         socketIOServer.addEventListener("username", String.class, (client, username, ackRequest) -> {
-            List<MapObject> mapObjects = gameStorageRepository.findMap(username);
             clientUsernames.put(client.getSessionId().toString(), username);
+
+            List<MapObject> mapObjects = gameStorageRepository.findMap(username);
+            List<GameObject> gameObjects = gameStorageRepository.findGame(username);
+
             gameService.addGame(username);
-            gameService.loadMap(mapObjects, username);
+            gameService.loadGame(gameObjects, username);
+
             client.sendEvent("map", mapObjects);
         });
 
         socketIOServer.addEventListener("clickLeft", Mouse.class, (client, mouse, ackRequest) -> {
             BurnerDrill burnerDrill = new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60);
+
             if(gameStorageRepository.buildObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()))){
                 client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
             }
-            gameService.addMapObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()));
+
+            gameService.addGameObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()));
         });
 
         socketIOServer.start();
@@ -67,12 +74,10 @@ public class SocketIOService {
                 }
 
                 for(String username : clientUsernames.values()){
-                    List<MapObject> mapObjects = gameService.getMapObjects(username);
-
-                    for(MapObject mapObject : mapObjects){
-                        if(mapObject instanceof Machine){
-                            gameStorageRepository.updateObject(mapObject, username);
-                        }
+                    List<GameObject> gameObjects = gameService.getGameObjects(username);
+                    
+                    for(GameObject gameObject : gameObjects){
+                        gameStorageRepository.updateObject(gameObject, username);
                     }
                 }
             }

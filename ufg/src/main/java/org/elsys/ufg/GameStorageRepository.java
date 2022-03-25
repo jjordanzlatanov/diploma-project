@@ -28,6 +28,10 @@ public class GameStorageRepository {
         return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), MapObject.class, username);
     }
 
+    public List<GameObject> findGame(String username){
+        return mongoTemplate.find(new Query().addCriteria(Criteria.where("ticking").is(true)), GameObject.class, username);
+    }
+
     public boolean buildObject(MapObject mapObject, String username) {
         MapObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(mapObject.getEndX()).and("startY").lt(mapObject.getEndY()).and("endX").gt(mapObject.getStartX()).and("endY").gt(mapObject.getStartY()).and("priority").gte(mapObject.getPriority())), MapObject.class, username);
 
@@ -53,8 +57,8 @@ public class GameStorageRepository {
         return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("rawMaterial").and("startX").gte(extractionMachine.getStartX()).lt(extractionMachine.getEndX()).and("startY").gte(extractionMachine.getStartY()).lt(extractionMachine.getEndY()).and("endX").gt(extractionMachine.getStartX()).lte(extractionMachine.getEndX()).and("endY").gt(extractionMachine.getStartY()).lte(extractionMachine.getEndY())), RawMaterial.class, username);
     }
 
-    public void updateObject(MapObject mapObject, String username){
-        mongoTemplate.save(mapObject, username);
+    public void updateObject(GameObject gameObject, String username){
+        mongoTemplate.save(gameObject, username);
     }
 }
 
