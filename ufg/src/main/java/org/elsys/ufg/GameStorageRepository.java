@@ -47,7 +47,7 @@ public class GameStorageRepository {
             }
         }
 
-        this.save(mapObject, username);
+        save(mapObject, username);
         return true;
     }
 
