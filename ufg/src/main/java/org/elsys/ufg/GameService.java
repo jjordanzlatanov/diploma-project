@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -24,8 +25,9 @@ public class GameService {
         game.remove(username);
     }
 
-    public void loadGame(List<GameObject> gameObjects, String username){
-        game.get(username).loadGame(gameObjects);
+    public void loadGame(List<GameObject> gameObjects, String username) {
+        List<GameObject> tickingGameObjects = gameObjects.stream().filter(GameObject::isTicking).toList();
+        game.get(username).loadGame(tickingGameObjects);
     }
 
     public void addGameObject(GameObject gameObject, String username){

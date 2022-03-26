@@ -43,27 +43,30 @@ public class SocketIOService {
 
         socketIOServer.addEventListener("username", String.class, (client, username, ackRequest) -> {
             clientUsernames.put(client.getSessionId().toString(), username);
-
-            List<MapObject> mapObjects = gameStorageRepository.findMap(username);
             List<GameObject> gameObjects = gameStorageRepository.findGame(username);
 
             gameService.addGame(username);
             gameService.loadGame(gameObjects, username);
-
-            client.sendEvent("map", mapObjects);
+            client.sendEvent("map", gameObjects);
         });
 
         socketIOServer.addEventListener("clickLeft", Action.class, (client, action, ackRequest) -> {
             String username = clientUsernames.get(client.getSessionId().toString());
 
-            MapObject mapObject = gameStorageRepository.buildObject(action, username);
+            GameObject gameObject = gameStorageRepository.buildObject(action, username);
 
-            if(mapObject == null){
+            if(gameObject == null){
                 return;
             }
 
-            client.sendEvent("build", mapObject);
-            gameService.addGameObject(mapObject, username);
+            client.sendEvent("build", gameObject);
+            gameService.addGameObject(gameObject, username);
+        });
+
+        socketIOServer.addEventListener("clickD", Action.class, (client, action, ackRequest) -> {
+            String username = clientUsernames.get(client.getSessionId().toString());
+
+
         });
 
         socketIOServer.start();

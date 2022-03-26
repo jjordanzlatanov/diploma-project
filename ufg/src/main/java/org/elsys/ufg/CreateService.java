@@ -23,7 +23,7 @@ public class CreateService {
         this.patterns = patterns;
     }
 
-    public MapObject create(String objectType, int startX, int startY, int endX, int endY) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
+    public GameObject create(String objectType, int startX, int startY, int endX, int endY) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {
         return patterns.get(objectType).getPatternClass().getConstructor(Integer.class, Integer.class, Integer.class, Integer.class).newInstance(startX, startY, endX, endY);
     }
 

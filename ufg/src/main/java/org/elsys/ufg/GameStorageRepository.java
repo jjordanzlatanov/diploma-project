@@ -18,28 +18,26 @@ public class GameStorageRepository {
     @Autowired
     private CreateService createService;
 
-    public void save(Object object, String username){
-        mongoTemplate.save(object, username);
-    }
-
-    public List<MapObject> findMap(String username){
-        if(!mongoTemplate.collectionExists(username)){
-            mongoTemplate.insert(mongoTemplate.findAll(Object.class, "initialMap"), username);
-        }
-
-        return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), MapObject.class, username);
+    public void save(GameObject gameObject, String username){
+        mongoTemplate.save(gameObject, username);
     }
 
     public List<GameObject> findGame(String username){
-        return mongoTemplate.find(new Query().addCriteria(Criteria.where("ticking").is(true)), GameObject.class, username);
+        if(!mongoTemplate.collectionExists(username)){
+            mongoTemplate.insert(mongoTemplate.findAll(GameObject.class, "initialMap"), username);
+        }
+
+        return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), GameObject.class, username);
     }
 
-    public MapObject buildObject(Action action, String username) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        if(action.getObjectType() == null){
+    public GameObject buildObject(Action action, String username) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        String objectType = action.getObjectType();
+
+        if(objectType == null){
             return null;
         }
 
-        Pattern pattern = createService.getPattern(action.getObjectType());
+        Pattern pattern = createService.getPattern(objectType);
 
         int startX = action.getRoundX();
         int startY = action.getRoundY();
@@ -47,16 +45,16 @@ public class GameStorageRepository {
         int endY = startY + pattern.getHeight();
         int priority = pattern.getPriority();
 
-        MapObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(endX).and("startY").lt(endY).and("endX").gt(startX).and("endY").gt(startY).and("priority").gte(priority)), MapObject.class, username);
+        GameObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(endX).and("startY").lt(endY).and("endX").gt(startX).and("endY").gt(startY).and("priority").gte(priority)), GameObject.class, username);
 
         if(intersectingObject != null) {
             return null;
         }
 
-        MapObject mapObject = createService.create(action.getObjectType(), startX, startY, endX, endY);
+        GameObject gameObject = createService.create(objectType, startX, startY, endX, endY);
 
-        if(mapObject.getTypes().contains("extractionMachine")){
-            ExtractionMachine extractionMachine = ((ExtractionMachine) mapObject);
+        if(gameObject.getTypes().contains("extractionMachine")){
+            ExtractionMachine extractionMachine = ((ExtractionMachine) gameObject);
             List<RawMaterial> resources = findResources(extractionMachine, username);
 
             if(resources.size() != 0){
@@ -65,8 +63,8 @@ public class GameStorageRepository {
             }
         }
 
-        save(mapObject, username);
-        return mapObject;
+        save(gameObject, username);
+        return gameObject;
     }
 
     public List<RawMaterial> findResources(ExtractionMachine extractionMachine, String username){

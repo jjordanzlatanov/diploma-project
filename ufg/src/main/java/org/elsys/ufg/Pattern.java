@@ -1,23 +1,23 @@
 package org.elsys.ufg;
 
 public class Pattern {
-    private Class<? extends MapObject> patternClass;
+    private Class<? extends GameObject> patternClass;
     private int width;
     private int height;
     private int priority;
 
-    public Pattern(Class<? extends MapObject> patternClass, int width, int height, int priority) {
+    public Pattern(Class<? extends GameObject> patternClass, int width, int height, int priority) {
         this.patternClass = patternClass;
         this.width = width;
         this.height = height;
         this.priority = priority;
     }
 
-    public Class<? extends MapObject> getPatternClass() {
+    public Class<? extends GameObject> getPatternClass() {
         return patternClass;
     }
 
-    public void setPatternClass(Class<? extends MapObject> patternClass) {
+    public void setPatternClass(Class<? extends GameObject> patternClass) {
         this.patternClass = patternClass;
     }
 

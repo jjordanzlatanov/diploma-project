@@ -81,9 +81,16 @@ class GameScene extends Phaser.Scene{
         })
 
         this.input.keyboard.on('keyup', (key) => {
+            action.clear();
+
             switch (key.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
-                    action.clear().setObjectType(buildSelection[0])
+                    action.setObjectType(buildSelection[0])
+                    break
+
+                case Phaser.Input.Keyboard.KeyCodes.D:
+                    action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
+                    socket.emit('clickD', action)
                     break
             
                 default:
@@ -101,8 +108,8 @@ class GameScene extends Phaser.Scene{
             }
         })
 
-        socket.on('build', (mapObject) => {
-            this.add.sprite(mapObject.startX, mapObject.startY, mapObject.texture).setOrigin(0)
+        socket.on('build', (gameObject) => {
+            this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0)
         })
     }
 
