@@ -32,12 +32,12 @@ public class Action {
     }
 
     public int getRoundX(){
-        int roundX = getX() / 30;
+        int roundX = x / 30;
         return roundX * 30;
     }
 
     public int getRoundY(){
-        int roundY = getY() / 30;
+        int roundY = y / 30;
         return roundY * 30;
     }
 

@@ -7,6 +7,7 @@ class Action {
         this.x = null
         this.y = null
         this.objectType = null
+        this.type = null
         return this
     }
 
@@ -31,6 +32,11 @@ class Action {
         return this
     }
 
+    setType(type){
+        this.type = type
+        return this
+    }
+
     getX(){
         return this.x
     }
@@ -42,6 +48,10 @@ class Action {
     getObjectType(){
         return this.objectType
     }
+
+    getType(){
+        return this.type
+    }
 }
 
 let initialGameObjects = null
@@ -49,7 +59,10 @@ let socket = null
 let game = null
 
 let action = new Action()
-let buildSelection = ['burnerDrill']
+// Game Objects Metadata
+let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60}]
+
+let buildSprite = null
 
 class GameScene extends Phaser.Scene{
     constructor(){
@@ -80,16 +93,21 @@ class GameScene extends Phaser.Scene{
             this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0)
         })
 
+        buildSprite = this.add.sprite(0, 0, 'grass').setOrigin(0)
+        buildSprite.setActive(false).setVisible(false)
+
         this.input.keyboard.on('keyup', (key) => {
             action.clear();
+            buildSprite.setActive(false).setVisible(false)
 
             switch (key.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
-                    action.setObjectType(buildSelection[0])
+                    action.setType('build')
+                    action.setObjectType(gom[0].type)
+                    buildSprite.setActive(true).setVisible(true).setTexture(gom[0].texture).setAlpha(0.5)
                     break
 
                 case Phaser.Input.Keyboard.KeyCodes.D:
-                    action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
                     socket.emit('clickD', action)
                     break
             }
@@ -99,7 +117,6 @@ class GameScene extends Phaser.Scene{
 
         this.input.on('pointerup', (pointer) => {
             if(pointer.leftButtonReleased()){
-                action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
                 socket.emit('clickLeft', action)
             }
         })
@@ -110,7 +127,8 @@ class GameScene extends Phaser.Scene{
     }
 
     update(){
-
+        buildSprite.setX(this.input.activePointer.worldX).setY(this.input.activePointer.worldY)
+        action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
     }
 }
 
