@@ -2,6 +2,7 @@ package org.elsys.ufg;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,6 +33,10 @@ public class GameService {
     }
 
     public List<GameObject> getGameObjects(String username){
+        if(game.get(username) == null){
+            return new ArrayList<>();
+        }
+
         return game.get(username).getGameObjects();
     }
 }

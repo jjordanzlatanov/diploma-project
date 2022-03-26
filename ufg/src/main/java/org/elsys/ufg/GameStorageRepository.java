@@ -7,12 +7,16 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Repository
 public class GameStorageRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
+
+    @Autowired
+    private CreateService createService;
 
     public void save(Object object, String username){
         mongoTemplate.save(object, username);
@@ -30,12 +34,26 @@ public class GameStorageRepository {
         return mongoTemplate.find(new Query().addCriteria(Criteria.where("ticking").is(true)), GameObject.class, username);
     }
 
-    public boolean buildObject(MapObject mapObject, String username) {
-        MapObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(mapObject.getEndX()).and("startY").lt(mapObject.getEndY()).and("endX").gt(mapObject.getStartX()).and("endY").gt(mapObject.getStartY()).and("priority").gte(mapObject.getPriority())), MapObject.class, username);
+    public MapObject buildObject(Action action, String username) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if(action.getObjectType() == null){
+            return null;
+        }
+
+        Pattern pattern = createService.getPattern(action.getObjectType());
+
+        int startX = action.getRoundX();
+        int startY = action.getRoundY();
+        int endX = startX + pattern.getWidth();
+        int endY = startY + pattern.getHeight();
+        int priority = pattern.getPriority();
+
+        MapObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(endX).and("startY").lt(endY).and("endX").gt(startX).and("endY").gt(startY).and("priority").gte(priority)), MapObject.class, username);
 
         if(intersectingObject != null) {
-            return false;
+            return null;
         }
+
+        MapObject mapObject = createService.create(action.getObjectType(), startX, startY, endX, endY);
 
         if(mapObject.getTypes().contains("extractionMachine")){
             ExtractionMachine extractionMachine = ((ExtractionMachine) mapObject);
@@ -48,7 +66,7 @@ public class GameStorageRepository {
         }
 
         save(mapObject, username);
-        return true;
+        return mapObject;
     }
 
     public List<RawMaterial> findResources(ExtractionMachine extractionMachine, String username){

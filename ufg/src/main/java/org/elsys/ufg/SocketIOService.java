@@ -53,14 +53,17 @@ public class SocketIOService {
             client.sendEvent("map", mapObjects);
         });
 
-        socketIOServer.addEventListener("clickLeft", Mouse.class, (client, mouse, ackRequest) -> {
-            BurnerDrill burnerDrill = new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60);
+        socketIOServer.addEventListener("clickLeft", Action.class, (client, action, ackRequest) -> {
+            String username = clientUsernames.get(client.getSessionId().toString());
 
-            if(gameStorageRepository.buildObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()))){
-                client.sendEvent("build", new BurnerDrill(mouse.getRoundX(), mouse.getRoundY(), mouse.getRoundX() + 60, mouse.getRoundY() + 60));
+            MapObject mapObject = gameStorageRepository.buildObject(action, username);
+
+            if(mapObject == null){
+                return;
             }
 
-            gameService.addGameObject(burnerDrill, clientUsernames.get(client.getSessionId().toString()));
+            client.sendEvent("build", mapObject);
+            gameService.addGameObject(mapObject, username);
         });
 
         socketIOServer.start();

@@ -19,12 +19,6 @@ MapObject:
     Machine:
         type: machine
 
-        SmeltingMachine:
-            type: smeltingMachine
-
-            StoneFurnace:
-                type: stoneFurnace
-
         ExtractionMachine:
             type: extractionMachine
 
@@ -33,6 +27,9 @@ MapObject:
 
         ProcessingMachine:
             type: processingMachine
+
+            StoneFurnace: 
+                stoneFurnace
 
             Assembler:
                 type: assembler

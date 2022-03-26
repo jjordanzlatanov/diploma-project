@@ -1,8 +1,55 @@
 /** @type {import('./phaser')} */
 
+class Action {
+    constructor(){}
+
+    clear(){
+        this.x = null
+        this.y = null
+        this.objectType = null
+        return this
+    }
+
+    setX(x){
+        this.x = x
+        return this
+    }
+    
+    setY(y){
+        this.y = y
+        return this
+    }
+
+    setCords(x, y){
+        this.x = x
+        this.y = y
+        return this
+    }
+
+    setObjectType(objectType){
+        this.objectType = objectType
+        return this
+    }
+
+    getX(){
+        return this.x
+    }
+    
+    getY(){
+        return this.y
+    }
+
+    getObjectType(){
+        return this.objectType
+    }
+}
+
 let initialMap = null
 let socket = null
 let game = null
+
+let action = new Action()
+let buildSelection = ['burnerDrill']
 
 class GameScene extends Phaser.Scene{
     constructor(){
@@ -33,11 +80,24 @@ class GameScene extends Phaser.Scene{
             this.add.sprite(mapObject.startX, mapObject.startY, mapObject.texture).setOrigin(0)
         })
 
+        this.input.keyboard.on('keyup', (key) => {
+            switch (key.keyCode) {
+                case Phaser.Input.Keyboard.KeyCodes.ONE:
+                    action.clear().setObjectType(buildSelection[0])
+                    break
+            
+                default:
+                    action.clear()
+                    break
+            }
+        })
+
         this.input.mouse.disableContextMenu()
 
         this.input.on('pointerup', (pointer) => {
             if(pointer.leftButtonReleased()){
-                socket.emit('clickLeft', {x: this.input.activePointer.worldX, y: this.input.activePointer.worldY})
+                action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
+                socket.emit('clickLeft', action)
             }
         })
 
