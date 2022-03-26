@@ -128,7 +128,7 @@ socket.on('connect', () => {
     socket.emit('username', username)
 })
 
-socket.on('map', (gameObjects) => {
+socket.on('game', (gameObjects) => {
     initialGameObjects = gameObjects
     game = new Phaser.Game(config)
 })

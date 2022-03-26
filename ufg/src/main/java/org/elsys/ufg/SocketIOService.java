@@ -47,7 +47,7 @@ public class SocketIOService {
 
             gameService.addGame(username);
             gameService.loadGame(gameObjects, username);
-            client.sendEvent("map", gameObjects);
+            client.sendEvent("game", gameObjects);
         });
 
         socketIOServer.addEventListener("clickLeft", Action.class, (client, action, ackRequest) -> {
@@ -65,8 +65,6 @@ public class SocketIOService {
 
         socketIOServer.addEventListener("clickD", Action.class, (client, action, ackRequest) -> {
             String username = clientUsernames.get(client.getSessionId().toString());
-
-
         });
 
         socketIOServer.start();
