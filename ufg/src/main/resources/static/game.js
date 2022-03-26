@@ -44,7 +44,7 @@ class Action {
     }
 }
 
-let initialMap = null
+let initialGameObjects = null
 let socket = null
 let game = null
 
@@ -76,8 +76,8 @@ class GameScene extends Phaser.Scene{
     }
 
     create(){
-        initialMap.forEach(mapObject => {
-            this.add.sprite(mapObject.startX, mapObject.startY, mapObject.texture).setOrigin(0)
+        initialGameObjects.forEach(gameObject => {
+            this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0)
         })
 
         this.input.keyboard.on('keyup', (key) => {
@@ -91,10 +91,6 @@ class GameScene extends Phaser.Scene{
                 case Phaser.Input.Keyboard.KeyCodes.D:
                     action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
                     socket.emit('clickD', action)
-                    break
-            
-                default:
-                    action.clear()
                     break
             }
         })
@@ -132,8 +128,8 @@ socket.on('connect', () => {
     socket.emit('username', username)
 })
 
-socket.on('map', (map) => {
-    initialMap = map
+socket.on('map', (gameObjects) => {
+    initialGameObjects = gameObjects
     game = new Phaser.Game(config)
 })
 
