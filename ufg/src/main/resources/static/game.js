@@ -37,6 +37,14 @@ class Action {
         return this
     }
 
+    setObjectWidth(objectWidth){
+        return this.objectWidth = objectWidth;
+    }
+
+    setObjectHeight(objectHeight){
+        return this.objectHeight = objectHeight;
+    }
+
     getX(){
         return this.x
     }
@@ -51,6 +59,50 @@ class Action {
 
     getType(){
         return this.type
+    }
+
+    getObjectWidth(){
+        return this.objectWidth;
+    }
+
+    getObjectHeight(){
+        return this.objectHeight;
+    }
+
+    getRoundX(){
+        return Math.floor(this.x / 30) * 30
+    }
+
+    getRoundY(){
+        return Math.floor(this.y / 30) * 30
+    }
+
+    getProjectX(){
+        let boxX = this.x
+        let closestX = Math.round(boxX / 30) * 30
+        let floor = Math.floor(boxX / 30) * 30
+        let farthestX = ((0.5 - (((closestX  - floor) % 4) / 4)) * 60) + floor
+
+        let widthCoef = ((this.objectWidth % 4) / 4)
+        let coef = ((closestX - farthestX) / 30)
+        let centerX = closestX - (coef * (30 * widthCoef))
+        let projectX = centerX - (this.objectWidth / 2)
+
+        return projectX
+    }
+
+    getProjectY(){
+        let boxY = this.y
+        let closestY = Math.round(boxY / 30) * 30
+        let floor = Math.floor(boxY / 30) * 30
+        let farthestY = ((0.5 - (((closestY  - floor) % 4) / 4)) * 60) + floor
+
+        let heightCoef = ((this.objectHeight % 4) / 4)
+        let coef = ((closestY - farthestY) / 30)
+        let centerY = closestY - (coef * (30 * heightCoef))
+        let projectY = centerY - (this.objectHeight / 2)
+
+        return projectY
     }
 }
 
@@ -104,6 +156,8 @@ class GameScene extends Phaser.Scene{
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
                     action.setType('build')
                     action.setObjectType(gom[0].type)
+                    action.setObjectWidth(gom[0].width)
+                    action.setObjectHeight(gom[0].height)
                     buildSprite.setActive(true).setVisible(true).setTexture(gom[0].texture).setAlpha(0.5)
                     break
 
@@ -127,8 +181,12 @@ class GameScene extends Phaser.Scene{
     }
 
     update(){
-        buildSprite.setX(this.input.activePointer.worldX).setY(this.input.activePointer.worldY)
         action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
+        
+
+        if(buildSprite.active){
+            buildSprite.setX(action.getProjectX()).setY(action.getProjectY())
+        }
     }
 }
 
