@@ -11,9 +11,11 @@ public class GameLogic implements Runnable {
     private List<GameObject> gameObjects;
     private boolean running;
     private Thread thread;
+    private GameStorageRepository gameStorageRepository;
 
-    GameLogic(String username){
+    GameLogic(String username, GameStorageRepository gameStorageRepository){
         this.username = username;
+        this.gameStorageRepository = gameStorageRepository;
         gameObjects = new ArrayList<>();
         running = true;
         thread = new Thread(this);
@@ -23,11 +25,13 @@ public class GameLogic implements Runnable {
     @Override
     public void run() {
         while(running){
-            for(GameObject gameObject : gameObjects){
-                try {
-                    gameObject.tick();
-                } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
-                    e.printStackTrace();
+            synchronized (gameObjects){
+                for(GameObject gameObject : gameObjects){
+                    try {
+                        gameObject.tick();
+                    } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -44,14 +48,28 @@ public class GameLogic implements Runnable {
     }
 
     public void loadGame(List<GameObject> gameObjects){
-        this.gameObjects.addAll(gameObjects);
+        synchronized (gameObjects) {
+            this.gameObjects.addAll(gameObjects);
+        }
     }
 
     public void addGameObject(GameObject gameObject){
-        gameObjects.add(gameObject);
+        synchronized (gameObjects) {
+            gameObjects.add(gameObject);
+        }
     }
 
     public List<GameObject> getGameObjects(){
-        return gameObjects;
+        synchronized (gameObjects) {
+            return gameObjects;
+        }
+    }
+
+    public void updateGame(){
+        synchronized (gameObjects) {
+            for(GameObject gameObject : gameObjects) {
+                gameStorageRepository.updateObject(gameObject, username);
+            }
+        }
     }
 }

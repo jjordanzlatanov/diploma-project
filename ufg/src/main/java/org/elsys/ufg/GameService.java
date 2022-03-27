@@ -16,8 +16,8 @@ public class GameService {
         game = new ConcurrentHashMap<>();
     }
 
-    public void addGame(String username){
-        game.put(username, new GameLogic(username));
+    public void addGame(String username, GameStorageRepository gameStorageRepository){
+        game.put(username, new GameLogic(username, gameStorageRepository));
     }
 
     public void stopGame(String username){
@@ -35,10 +35,10 @@ public class GameService {
     }
 
     public List<GameObject> getGameObjects(String username){
-        if(game.get(username) == null){
-            return new ArrayList<>();
-        }
-
         return game.get(username).getGameObjects();
+    }
+
+    public void updateGame(String username){
+        game.get(username).updateGame();
     }
 }

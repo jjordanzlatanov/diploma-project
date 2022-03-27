@@ -42,12 +42,12 @@ public class SocketIOService {
         });
 
         socketIOServer.addEventListener("username", String.class, (client, username, ackRequest) -> {
-            clientUsernames.put(client.getSessionId().toString(), username);
+            String userId = client.getSessionId().toString();
             List<GameObject> gameObjects = gameStorageRepository.findGame(username);
-
-            gameService.addGame(username);
+            gameService.addGame(username, gameStorageRepository);
             gameService.loadGame(gameObjects, username);
             client.sendEvent("game", gameObjects);
+            clientUsernames.put(userId, username);
         });
 
         socketIOServer.addEventListener("clickLeft", Action.class, (client, action, ackRequest) -> {
@@ -71,18 +71,14 @@ public class SocketIOService {
 
         new Thread(() -> {
             while (true) {
+                for(String username : clientUsernames.values()){
+                    gameService.updateGame(username);
+                }
+
                 try {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-
-                for(String username : clientUsernames.values()){
-                    List<GameObject> gameObjects = gameService.getGameObjects(username);
-
-                    for(GameObject gameObject : gameObjects){
-                        gameStorageRepository.updateObject(gameObject, username);
-                    }
                 }
             }
         }).start();
