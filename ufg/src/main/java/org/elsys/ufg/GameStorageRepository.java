@@ -39,8 +39,8 @@ public class GameStorageRepository {
 
         Pattern pattern = createService.getPattern(objectType);
 
-        int startX = action.getRoundX();
-        int startY = action.getRoundY();
+        int startX = action.getStartX();
+        int startY = action.getStartY();
         int endX = startX + pattern.getWidth();
         int endY = startY + pattern.getHeight();
         int priority = pattern.getPriority();

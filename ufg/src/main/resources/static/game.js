@@ -8,6 +8,10 @@ class Action {
         this.y = null
         this.objectType = null
         this.type = null
+        this.objectWidth = null
+        this.objectHeight = null
+        this.startX = null
+        this.startY = null
         return this
     }
 
@@ -27,6 +31,22 @@ class Action {
         return this
     }
 
+    setStartX(startX){
+        this.startX = startX
+        return this
+    }
+    
+    setStartY(startY){
+        this.startY = startY
+        return this
+    }
+
+    setStartCords(startX, startY){
+        this.startX = startX
+        this.startY = startY
+        return this
+    }
+
     setObjectType(objectType){
         this.objectType = objectType
         return this
@@ -38,11 +58,13 @@ class Action {
     }
 
     setObjectWidth(objectWidth){
-        return this.objectWidth = objectWidth;
+        this.objectWidth = objectWidth;
+        return this
     }
 
     setObjectHeight(objectHeight){
-        return this.objectHeight = objectHeight;
+        this.objectHeight = objectHeight;
+        return this
     }
 
     getX(){
@@ -51,6 +73,14 @@ class Action {
     
     getY(){
         return this.y
+    }
+
+    getStartX(){
+        return this.startX
+    }
+    
+    getStartY(){
+        return this.startY
     }
 
     getObjectType(){
@@ -171,6 +201,7 @@ class GameScene extends Phaser.Scene{
 
         this.input.on('pointerup', (pointer) => {
             if(pointer.leftButtonReleased()){
+                action.setStartCords(action.getProjectX(), action.getProjectY())
                 socket.emit('clickLeft', action)
             }
         })
@@ -182,7 +213,6 @@ class GameScene extends Phaser.Scene{
 
     update(){
         action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
-        
 
         if(buildSprite.active){
             buildSprite.setX(action.getProjectX()).setY(action.getProjectY())
