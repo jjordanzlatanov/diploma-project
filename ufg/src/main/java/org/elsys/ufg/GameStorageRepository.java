@@ -74,8 +74,6 @@ public class GameStorageRepository {
     public void deleteGameObject(GameObject gameObject, String username) {
         mongoTemplate.remove(new Query().addCriteria(Criteria.where("uuid").is(gameObject.getUuid())), username);
     }
-
-    // add findGameObjects
 }
 
 

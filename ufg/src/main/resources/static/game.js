@@ -139,6 +139,8 @@ class Action {
 let initialGameObjects = null
 let socket = null
 let game = null
+let gameObjects = []
+
 
 let action = new Action()
 // Game Objects Metadata
@@ -146,7 +148,7 @@ let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60}
 
 let buildSprite = null
 
-class GameScene extends Phaser.Scene{
+class GameScene extends Phaser.Scene {
     constructor(){
         super('game')
     }
@@ -172,13 +174,15 @@ class GameScene extends Phaser.Scene{
 
     create(){
         initialGameObjects.forEach(gameObject => {
-            this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0)
+            gameObjects.push({sprite: this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0), uuid: gameObject.uuid})
         })
 
         buildSprite = this.add.sprite(0, 0, 'grass').setOrigin(0)
         buildSprite.setActive(false).setVisible(false)
 
         this.input.keyboard.on('keyup', (key) => {
+            buildSprite.setActive(false).setVisible(false)
+
             switch (key.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
                     action.setType('build')
@@ -195,7 +199,6 @@ class GameScene extends Phaser.Scene{
 
                 default:
                     action.clear()
-                    buildSprite.setActive(false).setVisible(false)
                     break
             }
         })
@@ -212,7 +215,14 @@ class GameScene extends Phaser.Scene{
         })
 
         socket.on('build', (gameObject) => {
-            this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0)
+            gameObjects.push({sprite: this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0), uuid: gameObject.uuid})
+        })
+
+        socket.on('destroy', (gameObject) => {
+            let index = gameObjects.findIndex((element) => element.uuid === gameObject.uuid)
+            
+            gameObjects[index].sprite.destroy()
+            gameObjects.splice(index, 1)
         })
     }
 
