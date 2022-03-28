@@ -68,8 +68,14 @@ public class GameLogic implements Runnable {
     public void updateGame(){
         synchronized (gameObjects) {
             for(GameObject gameObject : gameObjects) {
-                gameStorageRepository.updateObject(gameObject, username);
+                gameStorageRepository.save(gameObject, username);
             }
+        }
+    }
+
+    public void deleteGameObject(GameObject gameObject) {
+        synchronized (gameObjects) {
+            gameObjects.removeIf(currentGameObject -> currentGameObject.getUuid().equals(gameObject.getUuid()));
         }
     }
 }

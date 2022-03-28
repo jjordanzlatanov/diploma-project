@@ -65,7 +65,14 @@ public class SocketIOService {
 
         socketIOServer.addEventListener("clickD", Action.class, (client, action, ackRequest) -> {
             String username = clientUsernames.get(client.getSessionId().toString());
-            System.out.println(action.getX() + " " + action.getY());
+
+            GameObject gameObject = gameStorageRepository.findGameObject(action, username);
+
+            if(gameObject == null) {
+                return;
+            }
+
+            gameService.deleteGameObject(gameObject, username);
         });
 
         socketIOServer.start();

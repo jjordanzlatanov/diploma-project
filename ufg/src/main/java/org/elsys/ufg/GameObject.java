@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Document
 public abstract class GameObject {
@@ -13,9 +14,11 @@ public abstract class GameObject {
     private String id;
     private List<String> types;
     private boolean ticking;
+    private UUID uuid;
 
     public GameObject(){
         types = new ArrayList<>();
+        uuid = UUID.randomUUID();
         addType("gameObject");
     }
 
@@ -44,4 +47,12 @@ public abstract class GameObject {
     }
 
     public void tick() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {}
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
 }

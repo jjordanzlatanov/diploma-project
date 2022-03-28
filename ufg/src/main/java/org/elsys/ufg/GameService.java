@@ -41,4 +41,8 @@ public class GameService {
     public void updateGame(String username){
         game.get(username).updateGame();
     }
+
+    public void deleteGameObject(GameObject gameObject, String username) {
+        game.get(username).deleteGameObject(gameObject);
+    }
 }
