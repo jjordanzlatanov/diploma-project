@@ -113,8 +113,8 @@ class Action {
         let floor = Math.floor(boxX / 30) * 30
         let farthestX = ((0.5 - (((closestX  - floor) % 4) / 4)) * 60) + floor
 
-        let widthCoef = ((this.objectWidth % 4) / 4)
-        let coef = ((closestX - farthestX) / 30)
+        let widthCoef = (this.objectWidth % 4) / 4
+        let coef = (closestX - farthestX) / 30
         let centerX = closestX - (coef * (30 * widthCoef))
         let projectX = centerX - (this.objectWidth / 2)
 
@@ -127,8 +127,8 @@ class Action {
         let floor = Math.floor(boxY / 30) * 30
         let farthestY = ((0.5 - (((closestY  - floor) % 4) / 4)) * 60) + floor
 
-        let heightCoef = ((this.objectHeight % 4) / 4)
-        let coef = ((closestY - farthestY) / 30)
+        let heightCoef = (this.objectHeight % 4) / 4
+        let coef = (closestY - farthestY) / 30
         let centerY = closestY - (coef * (30 * heightCoef))
         let projectY = centerY - (this.objectHeight / 2)
 
@@ -179,9 +179,6 @@ class GameScene extends Phaser.Scene{
         buildSprite.setActive(false).setVisible(false)
 
         this.input.keyboard.on('keyup', (key) => {
-            action.clear();
-            buildSprite.setActive(false).setVisible(false)
-
             switch (key.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
                     action.setType('build')
@@ -192,7 +189,13 @@ class GameScene extends Phaser.Scene{
                     break
 
                 case Phaser.Input.Keyboard.KeyCodes.D:
+                    action.setType('destroy')
                     socket.emit('clickD', action)
+                    break
+
+                default:
+                    action.clear()
+                    buildSprite.setActive(false).setVisible(false)
                     break
             }
         })
@@ -201,8 +204,10 @@ class GameScene extends Phaser.Scene{
 
         this.input.on('pointerup', (pointer) => {
             if(pointer.leftButtonReleased()){
-                action.setStartCords(action.getProjectX(), action.getProjectY())
-                socket.emit('clickLeft', action)
+                if(action.getType() === 'build'){
+                    action.setStartCords(action.getProjectX(), action.getProjectY())
+                    socket.emit('clickLeft', action)
+                }
             }
         })
 

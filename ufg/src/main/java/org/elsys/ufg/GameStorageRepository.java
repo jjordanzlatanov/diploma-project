@@ -33,10 +33,6 @@ public class GameStorageRepository {
     public GameObject buildObject(Action action, String username) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String objectType = action.getObjectType();
 
-        if(objectType == null){
-            return null;
-        }
-
         Pattern pattern = createService.getPattern(objectType);
 
         int startX = action.getStartX();

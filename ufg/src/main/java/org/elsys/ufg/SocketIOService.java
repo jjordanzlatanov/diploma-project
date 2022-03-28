@@ -65,6 +65,7 @@ public class SocketIOService {
 
         socketIOServer.addEventListener("clickD", Action.class, (client, action, ackRequest) -> {
             String username = clientUsernames.get(client.getSessionId().toString());
+            System.out.println(action.getX() + " " + action.getY());
         });
 
         socketIOServer.start();
