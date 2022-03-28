@@ -74,6 +74,7 @@ public class SocketIOService {
 
             gameService.deleteGameObject(gameObject, username);
             gameStorageRepository.deleteGameObject(gameObject, username);
+//            List<GameObject> renderedGameObjects = gameStorageRepository.findGameObjects(String username);
         });
 
         socketIOServer.start();
