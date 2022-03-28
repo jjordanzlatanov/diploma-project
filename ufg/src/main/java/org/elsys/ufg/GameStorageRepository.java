@@ -70,6 +70,10 @@ public class GameStorageRepository {
     public GameObject findGameObject(Action action, String username){
         return mongoTemplate.findOne(new Query().addCriteria(Criteria.where("startX").lte(action.getX()).and("startY").lte(action.getY()).and("endX").gte(action.getX()).and("endY").gte(action.getY()).and("priority").gte(3)), GameObject.class, username);
     }
+
+    public void deleteGameObject(GameObject gameObject, String username) {
+        mongoTemplate.remove(new Query().addCriteria(Criteria.where("uuid").is(gameObject.getUuid())), username);
+    }
 }
 
 

@@ -73,6 +73,7 @@ public class SocketIOService {
             }
 
             gameService.deleteGameObject(gameObject, username);
+            gameStorageRepository.deleteGameObject(gameObject, username);
         });
 
         socketIOServer.start();
