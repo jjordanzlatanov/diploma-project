@@ -235,6 +235,14 @@ class GameScene extends Phaser.Scene {
             gameObjects[index].sprite.destroy()
             gameObjects.splice(index, 1)
         })
+
+        socket.on('updateTexture', (updatedGameObjects) => {
+            updatedGameObjects.forEach(gameObject => {
+                let index = gameObjects.findIndex((element) => (element.uuid === gameObject.uuid))
+
+                gameObjects[index].sprite.setTexture(gameObject.texture)
+            })
+        })
     }
 
     update(){
@@ -256,8 +264,8 @@ socket.on('connect', () => {
     socket.emit('username', username)
 })
 
-socket.on('game', (gameObjects) => {
-    initialGameObjects = gameObjects
+socket.on('game', (newGameObjects) => {
+    initialGameObjects = newGameObjects
     game = new Phaser.Game(config)
 })
 

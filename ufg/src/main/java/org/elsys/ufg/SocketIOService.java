@@ -53,7 +53,7 @@ public class SocketIOService {
         socketIOServer.addEventListener("clickLeft", Action.class, (client, action, ackRequest) -> {
             String username = clientUsernames.get(client.getSessionId().toString());
 
-            GameObject gameObject = gameStorageRepository.buildObject(action, username);
+            GameObject gameObject = gameStorageRepository.buildObject(action, username, client, gameService);
 
             if(gameObject == null){
                 return;

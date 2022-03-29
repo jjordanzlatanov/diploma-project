@@ -30,8 +30,10 @@ public class GameService {
         game.get(username).loadGame(tickingGameObjects);
     }
 
-    public void addGameObject(GameObject gameObject, String username){
-        game.get(username).addGameObject(gameObject);
+    public void addGameObject(GameObject gameObject, String username) {
+        if(gameObject.isTicking()) {
+            game.get(username).addGameObject(gameObject);
+        }
     }
 
     public List<GameObject> getGameObjects(String username){

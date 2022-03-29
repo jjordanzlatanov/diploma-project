@@ -1,5 +1,7 @@
 package org.elsys.ufg;
 
+import com.corundumstudio.socketio.SocketIOClient;
+import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -22,6 +24,12 @@ public class GameStorageRepository {
         mongoTemplate.save(gameObject, username);
     }
 
+    public void saveAll(List <GameObject> gameObjects, String username) {
+        for(GameObject gameObject : gameObjects) {
+            mongoTemplate.save(gameObject, username);
+        }
+    }
+
     public List<GameObject> findGame(String username){
         if(!mongoTemplate.collectionExists(username)){
             mongoTemplate.insert(mongoTemplate.findAll(GameObject.class, "initialMap"), username);
@@ -30,7 +38,7 @@ public class GameStorageRepository {
         return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), GameObject.class, username);
     }
 
-    public GameObject buildObject(Action action, String username) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public GameObject buildObject(Action action, String username, SocketIOClient client, GameService gameService) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String objectType = action.getObjectType();
 
         Pattern pattern = createService.getPattern(objectType);
@@ -57,6 +65,44 @@ public class GameStorageRepository {
                 extractionMachine.setMaterial(resources.get(0));
                 extractionMachine.setAmountTiles(resources.size());
             }
+        }
+
+        if(gameObject.getTypes().contains("pipe")){
+            Pipe pipe = ((Pipe) gameObject);
+
+            Pipe upPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX()).and("startY").is(pipe.getStartY() - 30)), Pipe.class, username);
+            Pipe downPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX()).and("startY").is(pipe.getStartY() + 30)), Pipe.class, username);
+            Pipe leftPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX() - 30).and("startY").is(pipe.getStartY())), Pipe.class, username);
+            Pipe rightPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX() + 30).and("startY").is(pipe.getStartY())), Pipe.class, username);
+
+            List<GameObject> gameObjects = new ArrayList<>();
+
+            if(upPipe != null) {
+                pipe.setUpConnection(true);
+                upPipe.setDownConnection(true);
+                gameObjects.add(upPipe);
+            }
+
+            if(downPipe != null) {
+                pipe.setDownConnection(true);
+                downPipe.setUpConnection(true);
+                gameObjects.add(downPipe);
+            }
+
+            if(leftPipe != null) {
+                pipe.setLeftConnection(true);
+                leftPipe.setRightConnection(true);
+                gameObjects.add(leftPipe);
+            }
+
+            if(rightPipe != null) {
+                pipe.setRightConnection(true);
+                rightPipe.setLeftConnection(true);
+                gameObjects.add(rightPipe);
+            }
+
+            saveAll(gameObjects, username);
+            client.sendEvent("updateTexture", gameObjects);
         }
 
         save(gameObject, username);
