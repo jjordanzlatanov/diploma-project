@@ -44,9 +44,7 @@ public class GameLogic implements Runnable {
     }
 
     public void stop(){
-        synchronized (gameObjects) {
-            running = false;
-        }
+        running = false;
     }
 
     public void loadGame(List<GameObject> gameObjects){
