@@ -219,7 +219,7 @@ class GameScene extends Phaser.Scene {
         })
 
         socket.on('destroy', (gameObject) => {
-            let index = gameObjects.findIndex((element) => element.uuid === gameObject.uuid)
+            let index = gameObjects.findIndex((element) => (element.uuid === gameObject.uuid))
             
             gameObjects[index].sprite.destroy()
             gameObjects.splice(index, 1)
