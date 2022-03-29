@@ -99,14 +99,6 @@ class Action {
         return this.objectHeight;
     }
 
-    getRoundX(){
-        return Math.floor(this.x / 30) * 30
-    }
-
-    getRoundY(){
-        return Math.floor(this.y / 30) * 30
-    }
-
     getProjectX(){
         let boxX = this.x
         let closestX = Math.round(boxX / 30) * 30
