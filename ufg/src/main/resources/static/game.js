@@ -1,5 +1,9 @@
 /** @type {import('./phaser')} */
 
+// Game Objects Metadata
+let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60}, {type: 'pipe', texture: 'pipe-cross', width: 30, height: 30}]
+let buildSprite = null
+
 class Action {
     constructor(){}
 
@@ -67,6 +71,14 @@ class Action {
         return this
     }
 
+    setObject(ObjectIndex){
+        this.type = 'build'
+        this.objectType = gom[ObjectIndex].type
+        this.objectWidth = gom[ObjectIndex].width
+        this.objectHeight = gom[ObjectIndex].height
+        buildSprite.setActive(true).setVisible(true).setTexture(gom[ObjectIndex].texture).setAlpha(0.5)
+    }
+
     getX(){
         return this.x
     }
@@ -132,13 +144,8 @@ let initialGameObjects = null
 let socket = null
 let game = null
 let gameObjects = []
-
-
 let action = new Action()
-// Game Objects Metadata
-let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60}]
 
-let buildSprite = null
 
 class GameScene extends Phaser.Scene {
     constructor(){
@@ -151,17 +158,27 @@ class GameScene extends Phaser.Scene {
 
     preload(){
         this.load.image('grass', '/assets/grass.png')
-        this.load.image('coal', '../assets/coal.png')
+
+        this.load.image('coal-ore', '../assets/coal-ore.png')
         this.load.image('iron-ore', '../assets/iron-ore.png')
         this.load.image('copper-ore', '../assets/copper-ore.png')
         this.load.image('burner-drill', '../assets/burner-drill.png')
         this.load.image('stone-furnace', '../assets/stone-furnace.png')
+
         this.load.image('pipe-corner-down-left', '../assets/pipe-corner-down-left.png')
         this.load.image('pipe-corner-down-right', '../assets/pipe-corner-down-right.png')
         this.load.image('pipe-corner-up-left', '../assets/pipe-corner-up-left.png')
         this.load.image('pipe-corner-up-right', '../assets/pipe-corner-up-right.png')
+
+        this.load.image('pipe-cross', '../assets/pipe-cross.png')
+
         this.load.image('pipe-straight-horizontal', '../assets/pipe-straight-horizontal.png')
         this.load.image('pipe-straight-vertical', '../assets/pipe-straight-vertical.png')
+
+        this.load.image('pipe-t-down', '../assets/pipe-t-down.png')
+        this.load.image('pipe-t-left', '../assets/pipe-t-left.png')
+        this.load.image('pipe-t-right', '../assets/pipe-t-right.png')
+        this.load.image('pipe-t-up', '../assets/pipe-t-up.png')
     }
 
     create(){
@@ -169,19 +186,18 @@ class GameScene extends Phaser.Scene {
             gameObjects.push({sprite: this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0), uuid: gameObject.uuid})
         })
 
-        buildSprite = this.add.sprite(0, 0, 'grass').setOrigin(0)
-        buildSprite.setActive(false).setVisible(false)
+        buildSprite = this.add.sprite(0, 0, 'grass').setOrigin(0).setActive(false).setVisible(false)
 
         this.input.keyboard.on('keyup', (key) => {
             buildSprite.setActive(false).setVisible(false)
 
             switch (key.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
-                    action.setType('build')
-                    action.setObjectType(gom[0].type)
-                    action.setObjectWidth(gom[0].width)
-                    action.setObjectHeight(gom[0].height)
-                    buildSprite.setActive(true).setVisible(true).setTexture(gom[0].texture).setAlpha(0.5)
+                    action.setObject(0)
+                    break
+
+                case Phaser.Input.Keyboard.KeyCodes.TWO:
+                    action.setObject(1)
                     break
 
                 case Phaser.Input.Keyboard.KeyCodes.D:

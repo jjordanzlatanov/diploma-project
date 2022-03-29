@@ -41,7 +41,7 @@ public class GameStorageRepository {
         int endY = startY + pattern.getHeight();
         int priority = pattern.getPriority();
 
-        GameObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(endX).and("startY").lt(endY).and("endX").gt(startX).and("endY").gt(startY).and("priority").gte(priority)), GameObject.class, username);
+        GameObject intersectingObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("startX").lt(endX).and("startY").lt(endY).and("endX").gt(startX).and("endY").gt(startY).and("priority").is(priority)), GameObject.class, username);
 
         if(intersectingObject != null) {
             return null;

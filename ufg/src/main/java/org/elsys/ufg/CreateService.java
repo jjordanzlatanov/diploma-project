@@ -13,6 +13,7 @@ public class CreateService {
     public CreateService(){
         patterns = new HashMap<>();
         patterns.put("burnerDrill", new Pattern(BurnerDrill.class, 60, 60, 3));
+        patterns.put("pipe", new Pattern(Pipe.class, 30, 30, 3));
     }
 
     public Map<String, Pattern> getPatterns() {

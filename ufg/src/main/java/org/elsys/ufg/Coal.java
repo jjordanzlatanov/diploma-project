@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class Coal extends Item {
     public Coal() {
-        super("coal");
+        super("coal-ore");
         addType("coal");
     }
 }
