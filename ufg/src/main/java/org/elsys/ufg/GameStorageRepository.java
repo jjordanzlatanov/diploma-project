@@ -117,7 +117,41 @@ public class GameStorageRepository {
         return mongoTemplate.findOne(new Query().addCriteria(Criteria.where("startX").lte(action.getX()).and("startY").lte(action.getY()).and("endX").gte(action.getX()).and("endY").gte(action.getY()).and("priority").gte(3)).with(Sort.by(Sort.Direction.DESC, "priority")), GameObject.class, username);
     }
 
-    public void deleteGameObject(GameObject gameObject, String username) {
+    public void deleteGameObject(GameObject gameObject, String username, SocketIOClient client) {
+        if(gameObject.getTypes().contains("pipe")){
+            Pipe pipe = ((Pipe) gameObject);
+
+            Pipe upPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX()).and("startY").is(pipe.getStartY() - 30)), Pipe.class, username);
+            Pipe downPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX()).and("startY").is(pipe.getStartY() + 30)), Pipe.class, username);
+            Pipe leftPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX() - 30).and("startY").is(pipe.getStartY())), Pipe.class, username);
+            Pipe rightPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX() + 30).and("startY").is(pipe.getStartY())), Pipe.class, username);
+
+            List<GameObject> gameObjects = new ArrayList<>();
+
+            if(upPipe != null) {
+                upPipe.setDownConnection(false);
+                gameObjects.add(upPipe);
+            }
+
+            if(downPipe != null) {
+                downPipe.setUpConnection(false);
+                gameObjects.add(downPipe);
+            }
+
+            if(leftPipe != null) {
+                leftPipe.setRightConnection(false);
+                gameObjects.add(leftPipe);
+            }
+
+            if(rightPipe != null) {
+                rightPipe.setLeftConnection(false);
+                gameObjects.add(rightPipe);
+            }
+
+            saveAll(gameObjects, username);
+            client.sendEvent("updateTexture", gameObjects);
+        }
+
         mongoTemplate.remove(new Query().addCriteria(Criteria.where("uuid").is(gameObject.getUuid())), username);
     }
 }
