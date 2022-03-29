@@ -2,20 +2,18 @@
 
 // Game Objects Metadata
 let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60}, {type: 'pipe', texture: 'pipe-cross', width: 30, height: 30}]
-let buildSprite = null
 
 class Action {
     constructor(){}
 
     clear(){
-        this.x = null
-        this.y = null
-        this.objectType = null
         this.type = null
+        this.objectType = null
         this.objectWidth = null
         this.objectHeight = null
         this.startX = null
         this.startY = null
+        this.buildSprite.setActive(false).setVisible(false)
         return this
     }
 
@@ -29,35 +27,18 @@ class Action {
         return this
     }
 
-    setCords(x, y){
-        this.x = x
-        this.y = y
-        return this
-    }
-
-    setStartX(startX){
-        this.startX = startX
-        return this
-    }
-    
-    setStartY(startY){
-        this.startY = startY
-        return this
-    }
-
-    setStartCords(startX, startY){
-        this.startX = startX
-        this.startY = startY
-        return this
-    }
-
-    setObjectType(objectType){
-        this.objectType = objectType
+    setBuildSprite(sprite) {
+        this.buildSprite = sprite.setOrigin(0).setActive(false).setVisible(false)
         return this
     }
 
     setType(type){
         this.type = type
+        return this
+    }
+
+    setObjectType(objectType){
+        this.objectType = objectType
         return this
     }
 
@@ -76,42 +57,10 @@ class Action {
         this.objectType = gom[ObjectIndex].type
         this.objectWidth = gom[ObjectIndex].width
         this.objectHeight = gom[ObjectIndex].height
-        buildSprite.setActive(true).setVisible(true).setTexture(gom[ObjectIndex].texture).setAlpha(0.5)
+        this.buildSprite.setTexture(gom[ObjectIndex].texture).setAlpha(0.5).setActive(true).setVisible(true)
     }
 
-    getX(){
-        return this.x
-    }
-    
-    getY(){
-        return this.y
-    }
-
-    getStartX(){
-        return this.startX
-    }
-    
-    getStartY(){
-        return this.startY
-    }
-
-    getObjectType(){
-        return this.objectType
-    }
-
-    getType(){
-        return this.type
-    }
-
-    getObjectWidth(){
-        return this.objectWidth;
-    }
-
-    getObjectHeight(){
-        return this.objectHeight;
-    }
-
-    getProjectX(){
+    setStartX(){
         let boxX = this.x
         let closestX = Math.round(boxX / 30) * 30
         let floor = Math.floor(boxX / 30) * 30
@@ -122,10 +71,11 @@ class Action {
         let centerX = closestX - (coef * (30 * widthCoef))
         let projectX = centerX - (this.objectWidth / 2)
 
-        return projectX
+        this.startX = projectX
+        return this
     }
-
-    getProjectY(){
+    
+    setStartY(){
         let boxY = this.y
         let closestY = Math.round(boxY / 30) * 30
         let floor = Math.floor(boxY / 30) * 30
@@ -136,7 +86,66 @@ class Action {
         let centerY = closestY - (coef * (30 * heightCoef))
         let projectY = centerY - (this.objectHeight / 2)
 
-        return projectY
+        this.startY = projectY
+        return this
+    }
+
+    setBuildSpriteX() {
+        this.buildSprite.setX(this.startX)
+        return this
+    }
+
+    setBuildSpriteY() {
+        this.buildSprite.setY(this.startY)
+        return this
+    }
+
+    getX(){
+        return this.x
+    }
+    
+    getY(){
+        return this.y
+    }
+
+    getBuildSprite() {
+        return this.buildSprite
+    }
+
+    getBuildSpriteActive() {
+        return this.buildSprite.active
+    }
+
+    getType(){
+        return this.type
+    }
+
+    getObjectType(){
+        return this.objectType
+    }
+
+    getObjectWidth(){
+        return this.objectWidth;
+    }
+
+    getObjectHeight(){
+        return this.objectHeight;
+    }
+
+    getStartX(){
+        return this.startX
+    }
+    
+    getStartY(){
+        return this.startY
+    }
+
+    update(x, y) {
+        this.setX(x).setY(y)
+
+        if(this.getBuildSpriteActive()) {
+            this.setStartX().setStartY().setBuildSpriteX().setBuildSpriteY()
+        }
     }
 }
 
@@ -145,7 +154,6 @@ let socket = null
 let game = null
 let gameObjects = []
 let action = new Action()
-
 
 class GameScene extends Phaser.Scene {
     constructor(){
@@ -186,10 +194,10 @@ class GameScene extends Phaser.Scene {
             gameObjects.push({sprite: this.add.sprite(gameObject.startX, gameObject.startY, gameObject.texture).setOrigin(0), uuid: gameObject.uuid})
         })
 
-        buildSprite = this.add.sprite(0, 0, 'grass').setOrigin(0).setActive(false).setVisible(false)
+        action.setBuildSprite(this.add.sprite(0, 0, 'grass'))
 
         this.input.keyboard.on('keyup', (key) => {
-            buildSprite.setActive(false).setVisible(false)
+            action.clear()
 
             switch (key.keyCode) {
                 case Phaser.Input.Keyboard.KeyCodes.ONE:
@@ -204,10 +212,6 @@ class GameScene extends Phaser.Scene {
                     action.setType('destroy')
                     socket.emit('clickD', action)
                     break
-
-                default:
-                    action.clear()
-                    break
             }
         })
 
@@ -216,7 +220,6 @@ class GameScene extends Phaser.Scene {
         this.input.on('pointerup', (pointer) => {
             if(pointer.leftButtonReleased()){
                 if(action.getType() === 'build'){
-                    action.setStartCords(action.getProjectX(), action.getProjectY())
                     socket.emit('clickLeft', action)
                 }
             }
@@ -228,18 +231,14 @@ class GameScene extends Phaser.Scene {
 
         socket.on('destroy', (gameObject) => {
             let index = gameObjects.findIndex((element) => (element.uuid === gameObject.uuid))
-            
+
             gameObjects[index].sprite.destroy()
             gameObjects.splice(index, 1)
         })
     }
 
     update(){
-        action.setCords(this.input.activePointer.worldX, this.input.activePointer.worldY)
-
-        if(buildSprite.active){
-            buildSprite.setX(action.getProjectX()).setY(action.getProjectY())
-        }
+        action.update(this.input.activePointer.worldX, this.input.activePointer.worldY)
     }
 }
 
