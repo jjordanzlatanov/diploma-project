@@ -8,6 +8,7 @@ import java.util.Map;
 public class Inventory {
     private Map<String, List<Item>> inventories;
     private boolean hasInventory;
+    private Class<? extends Item> requiredItem;
 
     public Inventory() {
         inventories = new HashMap<>();
@@ -19,7 +20,33 @@ public class Inventory {
         hasInventory = true;
     }
 
+    public Class<? extends Item> getRequiredItem() {
+        return requiredItem;
+    }
+
+    public void setRequiredItem(Class<? extends Item> requiredItem) {
+        this.requiredItem = requiredItem;
+    }
+
     public void addManyToInventory(String inventory, List<Item> items) {
         inventories.get(inventory).addAll(items);
+    }
+
+    public List<Item> getItemsFromInventory(Class <? extends Item> item, Integer amount) {
+        List<Item> items = new ArrayList<>();
+        List<Item> inventory = inventories.get("output");
+
+        for(Item currentItem : inventory) {
+            if(currentItem.getClass().equals(item)) {
+                items.add(currentItem);
+
+                if(items.size() == amount) {
+                    break;
+                }
+            }
+        }
+
+        inventory.removeAll(items);
+        return items;
     }
 }

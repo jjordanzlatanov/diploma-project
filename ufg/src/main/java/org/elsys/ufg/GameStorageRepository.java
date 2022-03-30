@@ -24,7 +24,7 @@ public class GameStorageRepository {
         mongoTemplate.save(gameObject, username);
     }
 
-    public void saveAll(List <GameObject> gameObjects, String username) {
+    public void saveAll(List <? extends GameObject> gameObjects, String username) {
         for(GameObject gameObject : gameObjects) {
             mongoTemplate.save(gameObject, username);
         }
@@ -96,34 +96,34 @@ public class GameStorageRepository {
                 pipe.setRightConnection(true);
             }
 
-            List<GameObject> gameObjects = new ArrayList<>();
+            List<Pipe> pipes = new ArrayList<>();
 
             if(upPipe != null) {
                 pipe.setUpConnection(true);
                 upPipe.setDownConnection(true);
-                gameObjects.add(upPipe);
+                pipes.add(upPipe);
             }
 
             if(downPipe != null) {
                 pipe.setDownConnection(true);
                 downPipe.setUpConnection(true);
-                gameObjects.add(downPipe);
+                pipes.add(downPipe);
             }
 
             if(leftPipe != null) {
                 pipe.setLeftConnection(true);
                 leftPipe.setRightConnection(true);
-                gameObjects.add(leftPipe);
+                pipes.add(leftPipe);
             }
 
             if(rightPipe != null) {
                 pipe.setRightConnection(true);
                 rightPipe.setLeftConnection(true);
-                gameObjects.add(rightPipe);
+                pipes.add(rightPipe);
             }
 
-            saveAll(gameObjects, username);
-            client.sendEvent("updateTexture", gameObjects);
+            saveAll(pipes, username);
+            client.sendEvent("updateTexture", pipes);
         }
 
         save(gameObject, username);

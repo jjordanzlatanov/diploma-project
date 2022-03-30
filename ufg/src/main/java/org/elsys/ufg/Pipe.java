@@ -5,6 +5,7 @@ public class Pipe extends MapObject {
     private boolean downConnection;
     private boolean leftConnection;
     private boolean rightConnection;
+    private LogisticNetwork logisticNetwork;
 
     public Pipe(Integer startX, Integer startY, Integer endX, Integer endY) {
         super(startX, startY, endX, endY, "pipe-cross", 3);
@@ -50,6 +51,14 @@ public class Pipe extends MapObject {
     public void setRightConnection(boolean rightConnection) {
         this.rightConnection = rightConnection;
         updateTexture();
+    }
+
+    public LogisticNetwork getLogisticNetwork() {
+        return logisticNetwork;
+    }
+
+    public void setLogisticNetwork(LogisticNetwork logisticNetwork) {
+        this.logisticNetwork = logisticNetwork;
     }
 
     public void updateTexture() {
