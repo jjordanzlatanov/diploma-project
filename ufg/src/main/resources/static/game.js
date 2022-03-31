@@ -1,7 +1,8 @@
 /** @type {import('./phaser')} */
 
 // Game Objects Metadata
-let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60}, {type: 'pipe', texture: 'pipe-cross', width: 30, height: 30}]
+let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60},
+            {type: 'pipe', texture: 'pipe-cross', width: 30, height: 30}]
 
 class Action {
     constructor(){}
