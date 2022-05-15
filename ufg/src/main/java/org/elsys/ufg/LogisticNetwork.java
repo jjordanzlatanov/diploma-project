@@ -21,7 +21,7 @@ public class LogisticNetwork extends GameObject {
             int amount = 4;
 
             for(Inventory output : outputs) {
-                List<Item> items = output.getItemsFromInventory(input.getRequiredItem(), amount);
+                List<Item> items = output.getItemsFromInventory("output", input.getRequiredItem(), amount);
                 input.addManyToInventory("input", items);
 
                 amount -= items.size();

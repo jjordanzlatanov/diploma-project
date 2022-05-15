@@ -27,7 +27,7 @@ public class SocketIOService {
     private GameService gameService;
 
     @PostConstruct
-    public void start(){
+    public void start() {
         socketIOServer.addConnectListener((client) -> {
             clients.put(client.getSessionId().toString(), client);
         });
@@ -53,9 +53,9 @@ public class SocketIOService {
         socketIOServer.addEventListener("clickLeft", Action.class, (client, action, ackRequest) -> {
             String username = clientUsernames.get(client.getSessionId().toString());
 
-            GameObject gameObject = gameStorageRepository.buildObject(action, username, client, gameService);
+            GameObject gameObject = gameStorageRepository.buildObject(action, username, client);
 
-            if(gameObject == null){
+            if(gameObject == null) {
                 return;
             }
 

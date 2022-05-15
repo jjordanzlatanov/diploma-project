@@ -9,7 +9,7 @@ import java.util.List;
 public abstract class Machine extends MapObject {
     public Machine(Integer startX, Integer startY, Integer endX, Integer endY, String texture, Integer priority) {
         super(startX, startY, endX, endY, texture, priority);
-        addType("machine");
         setTicking(true);
+        addType("machine");
     }
 }

@@ -43,7 +43,7 @@ public class GameLogic implements Runnable {
         }
     }
 
-    public void stop(){
+    public void stop() {
         running = false;
     }
 

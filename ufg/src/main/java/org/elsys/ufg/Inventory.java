@@ -32,9 +32,9 @@ public class Inventory {
         inventories.get(inventory).addAll(items);
     }
 
-    public List<Item> getItemsFromInventory(Class <? extends Item> item, Integer amount) {
+    public List<Item> getItemsFromInventory(String inventoryType, Class <? extends Item> item, Integer amount) {
         List<Item> items = new ArrayList<>();
-        List<Item> inventory = inventories.get("output");
+        List<Item> inventory = inventories.get(inventoryType);
 
         for(Item currentItem : inventory) {
             if(currentItem.getClass().equals(item)) {

@@ -30,15 +30,15 @@ public class GameStorageRepository {
         }
     }
 
-    public List<GameObject> findGame(String username){
-        if(!mongoTemplate.collectionExists(username)){
+    public List<GameObject> findGame(String username) {
+        if(!mongoTemplate.collectionExists(username)) {
             mongoTemplate.insert(mongoTemplate.findAll(GameObject.class, "initialMap"), username);
         }
 
         return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), GameObject.class, username);
     }
 
-    public GameObject buildObject(Action action, String username, SocketIOClient client, GameService gameService) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public GameObject buildObject(Action action, String username, SocketIOClient client) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String objectType = action.getObjectType();
 
         Pattern pattern = createService.getPattern(objectType);

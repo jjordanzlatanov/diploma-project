@@ -14,6 +14,7 @@ public class CreateService {
         patterns = new HashMap<>();
         patterns.put("burnerDrill", new Pattern(BurnerDrill.class, 60, 60, 3));
         patterns.put("pipe", new Pattern(Pipe.class, 30, 30, 3));
+        patterns.put("ironChest", new Pattern(IronChest.class, 30, 30, 3));
     }
 
     public GameObject create(String objectType, int startX, int startY, int endX, int endY) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException  {

@@ -18,8 +18,8 @@ public abstract class GameObject {
     public GameObject() {
         types = new ArrayList<>();
         uuid = UUID.randomUUID();
-        addType("gameObject");
         inventory = new Inventory();
+        addType("gameObject");
     }
 
     public List<String> getTypes() {

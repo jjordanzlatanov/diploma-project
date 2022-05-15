@@ -9,12 +9,12 @@ public class Pipe extends MapObject {
 
     public Pipe(Integer startX, Integer startY, Integer endX, Integer endY) {
         super(startX, startY, endX, endY, "pipe-cross", 3);
-        addType("pipe");
-        setTicking(false);
         this.upConnection = false;
         this.downConnection = false;
         this.leftConnection = false;
         this.rightConnection = false;
+        setTicking(false);
+        addType("pipe");
     }
 
     public boolean isUpConnection() {

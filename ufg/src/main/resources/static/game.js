@@ -2,7 +2,8 @@
 
 // Game Objects Metadata
 let gom = [{type: 'burnerDrill', texture: 'burner-drill', width: 60, height: 60},
-            {type: 'pipe', texture: 'pipe-cross', width: 30, height: 30}]
+            {type: 'pipe', texture: 'pipe-cross', width: 30, height: 30}, 
+            {type: 'ironChest', texture: 'iron-chest', width: 30, height: 30}]
 
 class Action {
     constructor(){}
@@ -188,6 +189,8 @@ class GameScene extends Phaser.Scene {
         this.load.image('pipe-t-left', '../assets/pipe-t-left.png')
         this.load.image('pipe-t-right', '../assets/pipe-t-right.png')
         this.load.image('pipe-t-up', '../assets/pipe-t-up.png')
+
+        this.load.image('iron-chest', '../assets/iron-chest.png')
     }
 
     create(){
@@ -207,6 +210,10 @@ class GameScene extends Phaser.Scene {
 
                 case Phaser.Input.Keyboard.KeyCodes.TWO:
                     action.setObject(1)
+                    break
+
+                case Phaser.Input.Keyboard.KeyCodes.THREE:
+                    action.setObject(2)
                     break
 
                 case Phaser.Input.Keyboard.KeyCodes.D:
