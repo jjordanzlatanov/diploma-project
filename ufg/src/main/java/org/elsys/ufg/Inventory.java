@@ -34,6 +34,10 @@ public class Inventory {
         inventories.get(inventoryType).add(slot);
     }
 
+    public List<Slot> getSlots(String inventoryType) {
+        return inventories.get(inventoryType);
+    }
+
     public void addInventory(String inventory) {
         inventories.put(inventory, new ArrayList<>());
         hasInventory = true;

@@ -1,7 +1,6 @@
 package org.elsys.ufg;
 
 import com.corundumstudio.socketio.SocketIOClient;
-import com.sun.tools.jconsole.JConsoleContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,6 +18,9 @@ public class GameStorageRepository {
 
     @Autowired
     private CreateService createService;
+
+    @Autowired
+    private GameService gameService;
 
     public void save(GameObject gameObject, String username){
         mongoTemplate.save(gameObject, username);
@@ -69,6 +71,7 @@ public class GameStorageRepository {
 
         if(gameObject.getTypes().contains("pipe")){
             Pipe pipe = ((Pipe) gameObject);
+            //pipe.setLogisticNetwork(new LogisticNetwork());
 
             Pipe upPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX()).and("startY").is(pipe.getStartY() - 30)), Pipe.class, username);
             Pipe downPipe = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("pipe").and("startX").is(pipe.getStartX()).and("startY").is(pipe.getStartY() + 30)), Pipe.class, username);
@@ -80,47 +83,73 @@ public class GameStorageRepository {
             GameObject leftGameObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("inventory.hasInventory").is(true).and("startX").lt(pipe.getStartX()).and("startY").lte(pipe.getStartY()).and("endX").is(pipe.getEndX() - 30).and("endY").gte(pipe.getEndY())), GameObject.class, username);
             GameObject rightGameObject = mongoTemplate.findOne(new Query().addCriteria(Criteria.where("types").in("mapObject").and("inventory.hasInventory").is(true).and("startX").is(pipe.getStartX() + 30).and("startY").lte(pipe.getStartY()).and("endX").gt(pipe.getEndX()).and("endY").gte(pipe.getEndY())), GameObject.class, username);
 
-            if(upGameObject != null) {
-                pipe.setUpConnection(true);
-            }
-
-            if(downGameObject != null) {
-                pipe.setDownConnection(true);
-            }
-
-            if(leftGameObject != null) {
-                pipe.setLeftConnection(true);
-            }
-
-            if(rightGameObject != null) {
-                pipe.setRightConnection(true);
-            }
-
             List<Pipe> pipes = new ArrayList<>();
+            //Set<LogisticNetwork> logisticNetworks = new HashSet<>();
 
             if(upPipe != null) {
                 pipe.setUpConnection(true);
                 upPipe.setDownConnection(true);
                 pipes.add(upPipe);
+                //logisticNetworks.add(upPipe.getLogisticNetwork());
             }
 
             if(downPipe != null) {
                 pipe.setDownConnection(true);
                 downPipe.setUpConnection(true);
                 pipes.add(downPipe);
+                //logisticNetworks.add(downPipe.getLogisticNetwork());
             }
 
             if(leftPipe != null) {
                 pipe.setLeftConnection(true);
                 leftPipe.setRightConnection(true);
                 pipes.add(leftPipe);
+                //logisticNetworks.add(leftPipe.getLogisticNetwork());
             }
 
             if(rightPipe != null) {
                 pipe.setRightConnection(true);
                 rightPipe.setLeftConnection(true);
                 pipes.add(rightPipe);
+                //logisticNetworks.add(rightPipe.getLogisticNetwork());
             }
+
+//            if(logisticNetworks.size() == 0) {
+//                pipe.setLogisticNetwork(new LogisticNetwork());
+//            }else if(logisticNetworks.size() == 1){
+//                pipe.setLogisticNetwork(logisticNetworks.stream().iterator().next());
+//            }else{
+//                pipe.setLogisticNetwork(new LogisticNetwork());
+//                pipe.merge(logisticNetworks.stream().toList());
+//                for(LogisticNetwork oldLogisticNetwork : logisticNetworks.stream().toList()) {
+//                    mongoTemplate.remove(new Query().addCriteria(Criteria.where("uuid").is(oldLogisticNetwork.getUuid())), username);
+//                }
+//            }
+
+            if(upGameObject != null) {
+                pipe.setUpConnection(true);
+                //pipe.connect(upGameObject.inventory);
+            }
+
+            if(downGameObject != null) {
+                pipe.setDownConnection(true);
+                //pipe.connect(downGameObject.inventory);
+            }
+
+            if(leftGameObject != null) {
+                pipe.setLeftConnection(true);
+                //pipe.connect(leftGameObject.inventory);
+            }
+
+            if(rightGameObject != null) {
+                pipe.setRightConnection(true);
+                //pipe.connect(rightGameObject.inventory);
+            }
+
+//            if(logisticNetworks.size() != 1) {
+//                gameService.addGameObject(pipe.getLogisticNetwork(), username);
+//                save(pipe.getLogisticNetwork(), username);
+//            }
 
             saveAll(pipes, username);
             client.sendEvent("updateTexture", pipes);

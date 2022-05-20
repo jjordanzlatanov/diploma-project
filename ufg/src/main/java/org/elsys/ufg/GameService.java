@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class GameService {
     private Map<String, GameLogic> game;
 
-    GameService(){
+    public GameService(){
         game = new ConcurrentHashMap<>();
     }
 

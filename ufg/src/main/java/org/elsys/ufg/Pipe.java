@@ -1,10 +1,17 @@
 package org.elsys.ufg;
 
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
+
+@Document
 public class Pipe extends MapObject {
     private boolean upConnection;
     private boolean downConnection;
     private boolean leftConnection;
     private boolean rightConnection;
+    @Transient
     private LogisticNetwork logisticNetwork;
 
     public Pipe(Integer startX, Integer startY, Integer endX, Integer endY) {
@@ -58,6 +65,19 @@ public class Pipe extends MapObject {
 
     public void setLogisticNetwork(LogisticNetwork logisticNetwork) {
         this.logisticNetwork = logisticNetwork;
+        this.logisticNetwork.addPipe(this);
+    }
+
+    public void connect(Inventory inventory) {
+        logisticNetwork.addInventory(inventory);
+    }
+
+    public void merge(List<LogisticNetwork> logisticNetworks) {
+        for(LogisticNetwork newLogisticNetwork : logisticNetworks) {
+            logisticNetwork.addPipes(newLogisticNetwork.getPipes());
+            logisticNetwork.addInputs(newLogisticNetwork.getInputs());
+            logisticNetwork.addOutputs(newLogisticNetwork.getOutputs());
+        }
     }
 
     public void updateTexture() {
