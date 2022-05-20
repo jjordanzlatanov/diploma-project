@@ -13,7 +13,6 @@ public class Pipe extends MapObject {
         this.downConnection = false;
         this.leftConnection = false;
         this.rightConnection = false;
-        setTicking(false);
         addType("pipe");
     }
 

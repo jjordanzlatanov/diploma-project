@@ -49,6 +49,18 @@ public class Slot {
         return false;
     }
 
+    public boolean areValidItemTypes(List <? extends Item> newItemTypes) {
+        for(Item item : itemTypes) {
+            for(Item newItem : newItemTypes) {
+                if(item.getClass().equals(newItem.getClass())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void addItems(List <Item> newItems) {
         int availableSpaces = limit - items.size();
 

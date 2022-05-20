@@ -35,7 +35,7 @@ public class GameStorageRepository {
             mongoTemplate.insert(mongoTemplate.findAll(GameObject.class, "initialMap"), username);
         }
 
-        return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("mapObject")).with(Sort.by(Sort.Direction.ASC, "priority")), GameObject.class, username);
+        return mongoTemplate.find(new Query().addCriteria(Criteria.where("types").in("gameObject")).with(Sort.by(Sort.Direction.ASC, "priority")), GameObject.class, username);
     }
 
     public GameObject buildObject(Action action, String username, SocketIOClient client) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

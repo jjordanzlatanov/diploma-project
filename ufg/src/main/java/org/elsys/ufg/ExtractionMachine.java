@@ -12,6 +12,7 @@ public abstract class ExtractionMachine extends Machine {
     public ExtractionMachine(Integer startX, Integer startY, Integer endX, Integer endY, String texture, Integer priority) {
         super(startX, startY, endX, endY, texture, priority);
         inventory.addInventory("output");
+        inventory.addInventory("input");
         addType("extractionMachine");
     }
 

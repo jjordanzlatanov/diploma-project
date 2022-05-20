@@ -30,8 +30,8 @@ public class Inventory {
         this.hasInventory = hasInventory;
     }
 
-    public List<Slot> getSlotsFromInventory(String inventoryType) {
-        return inventories.get(inventoryType);
+    public void addSlot(String inventoryType, Slot slot) {
+        inventories.get(inventoryType).add(slot);
     }
 
     public void addInventory(String inventory) {
