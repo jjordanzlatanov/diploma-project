@@ -1,0 +1,47 @@
+MapObject:
+    type: mapObject
+
+    Grass:
+        type: grass
+
+    RawMaterial:
+        type: rawMaterial
+
+        CoalOre:
+            type: coalOre
+
+        IronOre:
+            type: ironOre
+
+        CopperOre:
+            type: copperOre
+
+    Machine:
+        type: machine
+
+        ExtractionMachine:
+            type: extractionMachine
+
+            BurnerDrill:
+                type: burnerDrill
+
+        ProcessingMachine:
+            type: processingMachine
+
+            StoneFurnace: 
+                stoneFurnace
+
+            Assembler:
+                type: assembler
+
+Item:
+    type: item
+
+    Coal:
+        type: coal
+
+    RawIron:
+        type: rawIron
+
+    RawCopper:
+        type: rawCopper

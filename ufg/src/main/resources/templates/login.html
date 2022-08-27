@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <!-- Used in production -->
+  <link th:href="@{/login.css}" rel="stylesheet"/>
+
+  <!-- Used for development through VS Code Live Server extension -->
+  <link href="../static/login.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <div class="flex-container">
+    <div class="content-container">
+      <div class="form-container">
+        <form action="#" th:action="@{/login}" th:object="${user}" method="post">
+          <h1>Login</h1>
+          <br>
+          <span class="subtitle">USERNAME</span>
+          <br>
+          <input type="text" th:field="*{username}">
+          <br>
+          <span class="subtitle">PASSWORD</span>
+          <br>
+          <input type="password" th:field="*{password}">
+          <br>
+          <div class="input-container">
+            <input type="submit" value="LOGIN" class="button">
+            <input type="submit" name="register" value="REGISTER" class="button">
+          </div>
+        </form>
+      </div>
+    </div>
+    <div th:if="${errorMessage} != null" class="error-container">
+      <div class="box-container">
+        <p th:text="${errorMessage}" class="error-message"></p>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

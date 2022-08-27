@@ -1,0 +1,109 @@
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #121212;
+    /* fallback for old browsers */
+    overflow-x: hidden;
+
+    /* code to make all text unselectable */
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+h1 {
+    color: white;
+
+    font-size: 35px;
+    font-weight: 800;
+
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    border: none;
+    border-bottom: solid rgb(143, 143, 143) 1px;
+
+    margin-bottom: 30px;
+
+    background: none;
+    color: rgb(255, 255, 255);
+
+    height: 35px;
+    width: 300px;
+}
+
+/* Disables selector ring */
+body:not(.user-is-tabbing) button:focus,
+body:not(.user-is-tabbing) input:focus,
+body:not(.user-is-tabbing) select:focus,
+body:not(.user-is-tabbing) textarea:focus {
+    outline: none;
+}
+
+/* ########################################################## */
+
+.flex-container {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-container {
+    width: 450px;
+    height: 210px;
+
+    border-radius: 12px;
+
+    background: #1f1f1f;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.199);
+}
+
+.text-container {
+    width: 450px; 
+    height: 150px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button {
+    cursor: pointer;
+  
+    border: none;
+    border-radius: 8px;
+  
+    background: #183a2f;
+    color: rgba(255, 255, 255, 0.8);
+  
+    width: 80px;
+  
+    display: flex;
+    justify-content: center;
+  
+    transition: all 1s;
+}

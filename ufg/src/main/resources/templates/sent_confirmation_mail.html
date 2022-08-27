@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Email Sent</title>
+  <!-- Used in production -->
+  <link th:href="@{/sent_confirmation_mail.css}" rel="stylesheet"/>
+
+  <!-- Used for development through VS Code Live Server extension -->
+  <link href="../static/sent_confirmation_mail.css" rel="stylesheet"/>
+</head>
+
+<body>
+  <div class="flex-container">
+    <div class="content-container">
+      <div class="text-container">
+        <h1>Sent Confirmation Email To</h1>
+        <h1 th:text="${user.email}"></h1>
+        <h1>Link Expires In 24 Hours</h1>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

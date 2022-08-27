@@ -1,0 +1,8 @@
+# Spring Boot
+.idea
+.mvn
+target
+
+# Gam
+accountseed.txt
+
